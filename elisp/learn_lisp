@@ -1,0 +1,5 @@
+(defun hello-world (name)
+  "Say hello to use whose name is NAME."
+  (message "Hello, %s" name))
+
+(hello-world "Emacser")
