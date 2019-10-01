@@ -1,22 +1,23 @@
-#include <memory>
-#include <string>
 #include <iostream>
-#include <iterator>
 
-void foo(std::size_t n)
-{
-  std::allocator<std::string> alloc;
-  std::string * const p = alloc.allocate(n);
-  std::istream_iterator<std::string> str_it(std::cin), str_end;
-  auto q = std::uninitialized_copy(str_it, str_end, p);
-  while (q != p) {
-    std::cout << *--q << " ";
-    alloc.destroy(q);
-  }
-  alloc.deallocate(p, n);
-}
+class numbered {
+
+public:
+  numbered() :sn(i){std::cout << sn << std::endl;++i;}
+  numbered(const numbered &rhs) :sn(i) {++i;}
+  numbered &operator=(const numbered&) = delete;
+  std::size_t sn;
+
+private:
+  static std::size_t i;
+
+};
+
+std::size_t numbered::i = 0;
+
+void f(numbered &s) {std::cout << s.sn <<std::endl;}
 
 int main()
 {
-  foo(5);
+  numbered a, b;
 }
