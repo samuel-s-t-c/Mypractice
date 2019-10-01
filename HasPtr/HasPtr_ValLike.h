@@ -1,5 +1,5 @@
-#ifndef HASPTRH
-#define HASPTRH
+#ifndef HASPTR_VALLIKEH
+#define HASPTR_VALLIKEH
 
 #include <string>
 
@@ -11,10 +11,9 @@ public:
     :ps(new std::string(*o.ps)), i(o.i) { }
   HasPtr &operator=(const HasPtr &rhs)
   {
-    if (this == &rhs)
-      return *this;
+    auto newp = new std::string(*rhs.ps);
     delete ps;
-    ps = new std::string(*rhs.ps);
+    ps = newp;
     i = rhs.i;
     return *this;
   }
