@@ -4,6 +4,7 @@
 #include <string>
 
 class HasPtr {
+  friend void swap(HasPtr &lhs, HasPtr &rhs);
 public:
   HasPtr(const std::string &s = std::string())
     :ps(new std::string(s)), i(0) { }
@@ -22,5 +23,12 @@ private:
   std::string *ps;
   int i;
 };
-
+inline
+void swap(HasPtr &lhs, HasPtr &rhs)
+{
+  using std::swap;
+  swap(lhs.ps, rhs.ps);
+  swap(lhs.i, rhs.i);
+}
+// The functions should be placed into a non-header file
 #endif
