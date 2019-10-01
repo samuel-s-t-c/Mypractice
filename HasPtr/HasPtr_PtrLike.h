@@ -10,14 +10,14 @@ public:
   HasPtr(const HasPtr &o)
     :ps(o.ps), i(o.i) ,use(o.use) {++*use;}
   HasPtr &operator=(const HasPtr &rhs) {
+    ++*rhs.use;
     if(--*use) {
       delete ps;
       delete use;
     }
-    use = rhs.use;
-    ++*use;
     ps = rhs.ps;
     i = rhs.i;
+    use = rhs.use;
     return *this;
   }
   ~HasPtr( ) {
