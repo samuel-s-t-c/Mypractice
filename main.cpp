@@ -1,23 +1,14 @@
 #include <iostream>
+#include <vector>
 
-class numbered {
-
-public:
-  numbered() :sn(i){std::cout << sn << std::endl;++i;}
-  numbered(const numbered &rhs) :sn(i) {++i;}
-  numbered &operator=(const numbered&) = delete;
-  std::size_t sn;
-
-private:
-  static std::size_t i;
-
-};
-
-std::size_t numbered::i = 0;
-
-void f(numbered &s) {std::cout << s.sn <<std::endl;}
+int f()
+{return 1;}
 
 int main()
 {
-  numbered a, b;
+  std::vector<int> vi (100);
+  int &&r1 = f();
+  int &r2 = vi[0];
+  int &r3 = r1;
+  int &&r4 = vi[0] * f();
 }

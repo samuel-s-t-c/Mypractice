@@ -13,12 +13,14 @@ public:
   //constructor
   explicit Message(const std::string &s = std::string()) : content(s) { }
   Message(const Message &rhs);
+  Message(Message &&rhs);
 
   //destructor
   ~Message();
 
   //operator
   Message &operator=(const Message &rhs);
+  Message &operator=(Message &&rhs);
 
   //
   void remove(Folder &f);
@@ -30,7 +32,8 @@ private:
   std::set<Folder*> set_ptr_folder;
 
   void add_to_Folders(const Message&);
-  void remove_form_Folders();
+  void remove_from_Folders();
+  void moveFolders(Message *rhs);
   void addFolder(Folder *f) {set_ptr_folder.insert(f);}
   void remFolder(Folder *f) {set_ptr_folder.erase(f);}
 
@@ -43,19 +46,35 @@ Message::Message(const Message &rhs)
   add_to_Folders(rhs);
 }
 
+Message::Message(Message &&rhs)
+  : content(std::move(rhs.content))
+{
+  moveFolders(&rhs);
+}
+
 //destructor
 Message::~Message()
 {
-  remove_form_Folders();
+  remove_from_Folders();
 }
 
 //operator
 Message &Message::operator=(const Message &rhs)
 {
-  remove_form_Folders();
+  remove_from_Folders();
   content = rhs.content;
   set_ptr_folder = rhs.set_ptr_folder;
   add_to_Folders(rhs);
+  return *this;
+}
+
+Message &Message::operator=(Message &&rhs)
+{
+  if (this != &rhs) {
+    remove_from_Folders();
+    content = std::move(rhs.content);
+    moveFolders(&rhs);
+  }
   return *this;
 }
 
@@ -72,13 +91,23 @@ void Message::remove(Folder &f)
   f.remMsg(this);
 }
 
+void Message::moveFolders(Message *rhs)
+{
+  set_ptr_folder = std::move(rhs->set_ptr_folder);
+  for (auto f : set_ptr_folder) {
+    f->remMsg(rhs);
+    f->addMsg(this);
+  }
+  rhs->set_ptr_folder.clear();
+}
+
 void Message::add_to_Folders(const Message &m)
 {
   for (auto f : m.set_ptr_folder)
     f->addMsg(this);
 }
 
-void Message::remove_form_Folders()
+void Message::remove_from_Folders()
 {
   for (auto f : set_ptr_folder)
     f->remMsg(this);
@@ -137,16 +166,6 @@ void Folder::remove_Messages()
 {
   for (auto m : set_ptr_msg)
     m->remFolder(this);
-}
-
-void Folder::addMsg(Message *msg)
-{
-  set_ptr_msg.insert(msg);
-}
-
-void Folder::remMsg(Message *msg)
-{
-  set_ptr_msg.erase(msg);
 }
 
 void Folder::print()

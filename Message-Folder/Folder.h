@@ -24,8 +24,8 @@ private:
 
   void add_Messages(const Folder&);
   void remove_Messages();
-  void addMsg(Message *msg);
-  void remMsg(Message *msg);
+  void addMsg(Message *msg) {set_ptr_msg.insert(msg);}
+  void remMsg(Message *msg) {set_ptr_msg.erase(msg);}
 
 };
 

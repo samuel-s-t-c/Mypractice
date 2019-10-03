@@ -13,17 +13,12 @@ public:
     :ps(new std::string(s)), i(1) { }
   HasPtr(const HasPtr &o)
     :ps(new std::string(*o.ps)), i(o.i) { }
+  HasPtr(HasPtr &&o) noexcept
+    :ps(o.ps), i(o.i) {o.ps = nullptr;}
   //destrcuctor
   ~HasPtr( ) {delete ps;}
   //operator
-  HasPtr &operator=(const HasPtr &rhs)
-  {
-    auto newp = new std::string(*rhs.ps);
-    delete ps;
-    ps = newp;
-    i = rhs.i;
-    return *this;
-  }
+  HasPtr &operator=(HasPtr rhs);
   bool operator<(const HasPtr &rhs)
   {
     return *this->ps < *rhs.ps;
@@ -40,11 +35,18 @@ private:
   std::string *ps;
   int i;
 };
+//functions implement;
 inline
 void swap(HasPtr &lhs, HasPtr &rhs)
 {
   std::cout << "calling ";
   lhs.swap(rhs);
+}
+
+HasPtr &HasPtr::operator=(HasPtr rhs)
+{
+  ::swap(*this, rhs);
+  return *this;
 }
 
 inline
