@@ -1,24 +1,53 @@
-#include "Sales_data.h"
+#include <string>
+#include <iostream>
 
 class book {
+  friend std::ostream &operator<<(std::ostream &lhs, const book &rhs);
+  friend std::istream &operator>>(std::istream &lhs, book &rhs);
+  friend bool operator==(const book &lhs, const book &rhs);
+  friend bool operator!=(const book &lhs, const book &rhs);
 public:
-  book()
-    : book("No title", "anonymous", 0, "") { std::cout << "default\n";}
+  book() : book("nil", "nil", "anonymous", 0) { }
   book(std::string tl) : title(tl) { }
-  book(std::string tl, std::string oth, double p, std::string sub)
-    : title(tl), author(oth), price(p), subject(sub) { std::cout << "take three string\n";}
-  book(std::istream &os) {os >> title >> author >> price >> subject;}
+  book(std::string no, std::string tl, std::string name , double p)
+    : ISBN(no), title(tl), author(name), price(p) { }
+  book(std::istream &os) {os >> ISBN >> title >> author >> price;}
 private:
-  std::string title = "No title";
+  std::string ISBN = "nil";
+  std::string title = "nil";
   std::string author = "anonymous";
   double price = 0;
-  std::string subject;
 };
+// declarations of friend functions
+std::ostream &operator<<(std::ostream &lhs, const book &rhs);
+std::istream &operator>>(std::istream &lhs, const book &rhs);
+bool operator==(const book &lhs, const book &rhs);
+bool operator!=(const book &lhs, const book &rhs);
 
-int main()
+// implements of friend functions (may not in the header)
+
+std::ostream &operator<<(std::ostream &lhs, const book &rhs)
 {
-  Sales_data i("1", 1, 1);
-  std::string s = "2";
-  i.combine(s);
-  return 0;
+  lhs << rhs.ISBN << " " << rhs.title << " "
+      << rhs.author << " " << rhs.price << " ";
+  return lhs;
+}
+
+std::istream &operator>>(std::istream &lhs, book &rhs)
+{
+  book temp = rhs;
+  lhs >> rhs.ISBN >> rhs.title >> rhs.author >> rhs.price;
+  if (!lhs)
+    rhs = std::move(temp);
+  return lhs;
+}
+
+bool operator==(const book &lhs, const book &rhs)
+{
+  return lhs.ISBN == rhs.ISBN;
+}
+
+bool operator!=(const book &lhs, const book &rhs)
+{
+  return lhs.ISBN != rhs.ISBN;
 }

@@ -37,6 +37,7 @@ std::allocator<char> string::alloc;
 
 void string::free()
 {
+  std::cout << "stringFree\n";
   if (begin_) {
     for (auto i = end_; i != begin_; )
       alloc.destroy(--i);
@@ -53,7 +54,7 @@ std::pair<char*, char*> string::alloc_n_copy(const char *b, const char *e)
 //constructor
 string::string(const string &rhs)
 {
-  std::cout << "copy constructor\n";
+  std::cout << "string copy constructor\n";
   auto newdata = alloc_n_copy(rhs.begin(), rhs.end());
   begin_ = newdata.first;
   cap = end_ = newdata.second;
@@ -62,13 +63,13 @@ string::string(const string &rhs)
 string::string(string &&rhs) noexcept
   :begin_(rhs.begin_), end_(rhs.end_), cap(rhs.cap)
 {
-  std::cout << "move constructor\n";
+  std::cout << "string move constructor\n";
   rhs.begin_ = rhs.end_ = rhs.cap = nullptr;
 }
 
 string::string(const char cstr[] )
 {
-  std::cout << "c-string constructor\n";
+  std::cout << "stinrg c-string constructor\n";
   auto end = cstr - 1;
   while (*++end != '\0')
     continue;

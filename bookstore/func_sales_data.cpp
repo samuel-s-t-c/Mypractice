@@ -1,16 +1,41 @@
 #include "Sales_data.h"
 #include <iostream>
 
+// operator
 
-std::istream &read(std::istream &is,  Sales_data &item)
+Sales_data &Sales_data::operator=(const Sales_data &rhs)
 {
+  bookNo = rhs.bookNo;
+  units_sold = rhs.units_sold;
+  revenue = rhs.revenue;
+  return *this;
+}
+
+Sales_data &Sales_data::operator=(Sales_data &&rhs)
+{
+  if (this != &rhs) {
+    bookNo = std::move(rhs.bookNo);
+    units_sold = rhs.units_sold;
+    revenue = rhs.revenue;
+    rhs.bookNo = "";
+  }
+  return *this;
+}
+
+std::istream &operator>>(std::istream &is,  Sales_data &item)
+{
+  Sales_data temp = item;
   double price = 0;
   is >> item.bookNo >> item.units_sold >> price;
-  item.revenue =  price * item.units_sold;
+  if (is)
+    item.revenue =  price * item.units_sold;
+  else {
+    item = std::move(temp);
+  }
   return is;
 }
 
-std::ostream &print(std::ostream &os, const Sales_data &item)
+std::ostream &operator<<(std::ostream &os, const Sales_data &item)
 {
   os << item.bookNo << ' '
      << item.units_sold << ' '
@@ -19,9 +44,23 @@ std::ostream &print(std::ostream &os, const Sales_data &item)
   return os;
 }
 
-Sales_data add(const Sales_data &lhs, const Sales_data &rhs)
+Sales_data operator+(Sales_data lhs, const Sales_data &rhs)
 {
-  Sales_data sum = lhs;
-  sum.combine(rhs);
-  return sum;
+  return lhs += rhs;
+}
+
+// public member functions
+std::istream &read(std::istream &is,  Sales_data &item)
+{
+  return is >> item;
+}
+
+std::ostream &print(std::ostream &os, const Sales_data &item)
+{
+  return os << item;
+}
+
+Sales_data add(const Sales_data&lhs, const Sales_data&rhs)
+{
+  return lhs + rhs;
 }
