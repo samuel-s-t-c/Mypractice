@@ -4,12 +4,15 @@
 #include <string>
 #include <initializer_list>
 #include <memory>
+#include <algorithm>
 
 class StrBlobPtr;
 class ConstStrBlobPtr;
 class StrBlob {
   friend class StrBlobPtr;
   friend class ConstStrBlobPtr;
+  friend bool operator==(const StrBlob &, const StrBlob &);
+  friend bool operator!=(const StrBlob &, const StrBlob &);
 public:
   typedef std::vector<std::string>::size_type size_type;
   //constructor
@@ -26,17 +29,21 @@ public:
   //
   size_type size() const {return data ->size();};
   bool empty() const {return data ->empty();};
-  //
+
   void push_back(const std::string &str) {return data->push_back(str);};
   void push_back(std::string &&str) {return data->push_back(std::move(str));};
   void pop_back();
+
   std::string &front();
   const std::string &front() const;
+
   std::string &back();
   const std::string &back() const;
+
   StrBlobPtr begin();
-  StrBlobPtr end();
   ConstStrBlobPtr begin() const;
+
+  StrBlobPtr end();
   ConstStrBlobPtr end() const;
 private:
   std::shared_ptr<std::vector<std::string>> data;
@@ -44,6 +51,8 @@ private:
 };
 
 class StrBlobPtr {
+  friend bool operator==(const StrBlobPtr &lhs, const StrBlobPtr &rhs);
+  friend bool operator!=(const StrBlobPtr &lhs, const StrBlobPtr &rhs);
 public:
   StrBlobPtr() : index(0) { };
   StrBlobPtr(StrBlob &ob, StrBlob::size_type pos = 0)
@@ -155,5 +164,25 @@ void StrBlob::check(size_type i, const std::string &msg) const
 {
   if (i >= data->size())
     throw std::out_of_range(msg);
+}
+
+bool operator==(const StrBlob &lhs, const StrBlob &rhs)
+{
+  return *lhs.data == *rhs.data;
+}
+
+bool operator!=(const StrBlob &lhs, const StrBlob &rhs)
+{
+  return !(lhs == rhs);
+}
+
+bool operator==(const StrBlobPtr &lhs, const StrBlobPtr &rhs)
+{
+  return lhs.wptr.lock() == rhs.wptr.lock() &&
+         lhs.index == rhs.index;
+}
+bool operator!=(const StrBlobPtr &lhs, const StrBlobPtr &rhs)
+{
+  return !(lhs == rhs);
 }
 #endif

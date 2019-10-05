@@ -7,10 +7,12 @@
 class Sales_data {
   // friend declarations
   friend Sales_data operator+(Sales_data, const Sales_data&);
-  friend Sales_data add(const Sales_data&, const Sales_data&);
   friend std::ostream &operator<<(std::ostream&, const Sales_data&);
-  friend std::ostream &print(std::ostream&, const Sales_data&);
   friend std::istream &operator>>(std::istream&, Sales_data&);
+  friend bool operator==(const Sales_data &, const Sales_data &);
+  friend bool operator!=(const Sales_data &, const Sales_data &);
+  friend std::ostream &print(std::ostream&, const Sales_data&);
+  friend Sales_data add(const Sales_data&, const Sales_data&);
   friend std::istream &read(std::istream&, Sales_data&);
 public:
   // constructors
@@ -39,11 +41,14 @@ private:
   double revenue = 0.0;
 };
 //declarations for nonmember part of the Sales_data interface
+// Sales_data operator+(Sales_data, const Sales_data&);
 Sales_data operator+(Sales_data, const Sales_data&);
-Sales_data add(const Sales_data&, const Sales_data&);
 std::ostream &operator<<(std::ostream&, const Sales_data&);
-std::ostream &print(std::ostream&, const Sales_data&);
 std::istream &operator>>(std::istream&, Sales_data&);
+bool operator==(const Sales_data &, const Sales_data &);
+bool operator!=(const Sales_data &, const Sales_data &);
+std::ostream &print(std::ostream&, const Sales_data&);
+Sales_data add(const Sales_data&, const Sales_data&);
 std::istream &read(std::istream&, Sales_data&);
 
 inline
