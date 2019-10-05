@@ -6,12 +6,15 @@ class book {
   friend std::istream &operator>>(std::istream &lhs, book &rhs);
   friend bool operator==(const book &lhs, const book &rhs);
   friend bool operator!=(const book &lhs, const book &rhs);
+
 public:
   book() : book("nil", "nil", "anonymous", 0) { }
-  book(std::string tl) : title(tl) { }
-  book(std::string no, std::string tl, std::string name , double p)
+  book(const std::string &tl) : title(tl) { }
+  book(const std::string &no, const std::string &tl, const std::string &name , double p)
     : ISBN(no), title(tl), author(name), price(p) { }
   book(std::istream &os) {os >> ISBN >> title >> author >> price;}
+
+  book &operator=(const std::string tl);
 private:
   std::string ISBN = "nil";
   std::string title = "nil";
@@ -40,6 +43,14 @@ std::istream &operator>>(std::istream &lhs, book &rhs)
   if (!lhs)
     rhs = std::move(temp);
   return lhs;
+}
+
+book &book::operator=(const std::string tl)
+{
+  title = tl;
+  ISBN = author = "nil";
+  price = 0;
+  return *this;
 }
 
 bool operator==(const book &lhs, const book &rhs)

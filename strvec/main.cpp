@@ -1,12 +1,14 @@
 #include <vector>
 #include "StrVec.h"
+#include <string>
 #include "MyString.h"
+#include <iostream>
+#include <utility>
 
 int main()
 {
-  {
-    StrVec v1{"22", "23"}, v2{"12", "23"};
-    std::cout << (v1 == v2);
-    std::cout << std::endl;
-  }
+  std::string s = {"123"};
+  std::string *p = &s;
+  std::cout << p[1] << std::endl;
+  return 0;
 }

@@ -8,25 +8,42 @@
 
 class StrBlobPtr;
 class ConstStrBlobPtr;
+
+//============================================================
+//
+//  StrBlob definition: custom version of vector<string>
+//
+//============================================================
 class StrBlob {
   friend class StrBlobPtr;
   friend class ConstStrBlobPtr;
   friend bool operator==(const StrBlob &, const StrBlob &);
   friend bool operator!=(const StrBlob &, const StrBlob &);
+  friend bool operator<(const StrBlob &, const StrBlob &);
+  friend bool operator>(const StrBlob &, const StrBlob &);
+  friend bool operator<=(const StrBlob &, const StrBlob &);
+  friend bool operator>=(const StrBlob &, const StrBlob &);
+
 public:
+
   typedef std::vector<std::string>::size_type size_type;
-  //constructor
+
+  //********** constructor **********
   StrBlob() : data(std::make_shared<std::vector<std::string>>()) { };
   StrBlob(std::initializer_list<std::string> il)
     : data(std::make_shared<std::vector<std::string>>(il)) { };
   StrBlob(const StrBlob &obj) : data(new std::vector<std::string>(*obj.data)) { }
-  //operator
+
+
+  //********** operator **********
   StrBlob &operator=(const StrBlob &obj)
   {
     data.reset(new std::vector<std::string>(*obj.data));
     return *this;
   }
-  //
+
+
+  //********** other methods **********
   size_type size() const {return data ->size();};
   bool empty() const {return data ->empty();};
 
@@ -36,7 +53,6 @@ public:
 
   std::string &front();
   const std::string &front() const;
-
   std::string &back();
   const std::string &back() const;
 
@@ -45,14 +61,38 @@ public:
 
   StrBlobPtr end();
   ConstStrBlobPtr end() const;
+
 private:
+
   std::shared_ptr<std::vector<std::string>> data;
   void check(size_type i, const std::string &msg) const;
-};
 
+};
+//============================================================
+//            friend declarations
+//============================================================
+bool operator==(const StrBlob &lhs, const StrBlob &rhs);
+bool operator!=(const StrBlob &lhs, const StrBlob &rhs);
+bool operator==(const StrBlobPtr &lhs, const StrBlobPtr &rhs);
+bool operator!=(const StrBlobPtr &lhs, const StrBlobPtr &rhs);
+bool operator<(const StrBlob &, const StrBlob &);
+bool operator>(const StrBlob &, const StrBlob &);
+bool operator<=(const StrBlob &, const StrBlob &);
+bool operator>=(const StrBlob &, const StrBlob &);
+
+
+//============================================================
+//
+//  StrBlobPtr definition
+//
+//============================================================
 class StrBlobPtr {
   friend bool operator==(const StrBlobPtr &lhs, const StrBlobPtr &rhs);
   friend bool operator!=(const StrBlobPtr &lhs, const StrBlobPtr &rhs);
+  friend bool operator<(const StrBlobPtr &lhs, const StrBlobPtr &rhs);
+  friend bool operator>(const StrBlobPtr &lhs, const StrBlobPtr &rhs);
+  friend bool operator<=(const StrBlobPtr &lhs, const StrBlobPtr &rhs);
+  friend bool operator>=(const StrBlobPtr &lhs, const StrBlobPtr &rhs);
 public:
   StrBlobPtr() : index(0) { };
   StrBlobPtr(StrBlob &ob, StrBlob::size_type pos = 0)
@@ -81,8 +121,29 @@ private:
     return ret;
   }
 };
+//============================================================
+//  friend declarations
+//============================================================
+bool operator==(const StrBlobPtr &lhs, const StrBlobPtr &rhs);
+bool operator!=(const StrBlobPtr &lhs, const StrBlobPtr &rhs);
+bool operator<(const StrBlobPtr &lhs, const StrBlobPtr &rhs);
+bool operator>(const StrBlobPtr &lhs, const StrBlobPtr &rhs);
+bool operator<=(const StrBlobPtr &lhs, const StrBlobPtr &rhs);
+bool operator>=(const StrBlobPtr &lhs, const StrBlobPtr &rhs);
 
+
+//============================================================
+//
+//  ConstStrBlobPtr definition
+//
+//============================================================
 class ConstStrBlobPtr {
+  friend bool operator==(const ConstStrBlobPtr &lhs, const ConstStrBlobPtr &rhs);
+  friend bool operator!=(const ConstStrBlobPtr &lhs, const ConstStrBlobPtr &rhs);
+  friend bool operator<(const ConstStrBlobPtr &lhs, const ConstStrBlobPtr &rhs);
+  friend bool operator>(const ConstStrBlobPtr &lhs, const ConstStrBlobPtr &rhs);
+  friend bool operator<=(const ConstStrBlobPtr &lhs, const ConstStrBlobPtr &rhs);
+  friend bool operator>=(const ConstStrBlobPtr &lhs, const ConstStrBlobPtr &rhs);
 public:
   ConstStrBlobPtr() : index(0) { };
   ConstStrBlobPtr(const StrBlob &ob, StrBlob::size_type pos = 0)
@@ -111,7 +172,19 @@ private:
     return ret;
   }
 };
+//============================================================
+//  friend declarations
+//============================================================
+bool operator==(const ConstStrBlobPtr &lhs, const ConstStrBlobPtr &rhs);
+bool operator!=(const ConstStrBlobPtr &lhs, const ConstStrBlobPtr &rhs);
+bool operator<(const ConstStrBlobPtr &lhs, const ConstStrBlobPtr &rhs);
+bool operator>(const ConstStrBlobPtr &lhs, const ConstStrBlobPtr &rhs);
+bool operator<=(const ConstStrBlobPtr &lhs, const ConstStrBlobPtr &rhs);
+bool operator>=(const ConstStrBlobPtr &lhs, const ConstStrBlobPtr &rhs);
 
+//============================================================
+//    StrBlob inline functions' implements
+//============================================================
 inline
 void StrBlob::pop_back()
 {
@@ -165,24 +238,12 @@ void StrBlob::check(size_type i, const std::string &msg) const
   if (i >= data->size())
     throw std::out_of_range(msg);
 }
+//============================================================
+//  StrBlobPtr inline functions' implements
+//============================================================
 
-bool operator==(const StrBlob &lhs, const StrBlob &rhs)
-{
-  return *lhs.data == *rhs.data;
-}
+//============================================================
+//  ConstStrBlobPtr inline functions' implements
+//============================================================
 
-bool operator!=(const StrBlob &lhs, const StrBlob &rhs)
-{
-  return !(lhs == rhs);
-}
-
-bool operator==(const StrBlobPtr &lhs, const StrBlobPtr &rhs)
-{
-  return lhs.wptr.lock() == rhs.wptr.lock() &&
-         lhs.index == rhs.index;
-}
-bool operator!=(const StrBlobPtr &lhs, const StrBlobPtr &rhs)
-{
-  return !(lhs == rhs);
-}
 #endif

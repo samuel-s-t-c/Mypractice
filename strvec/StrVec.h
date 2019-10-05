@@ -11,14 +11,21 @@
 class StrVec {
   friend bool operator==(const StrVec &lhs, const StrVec &rhs);
   friend bool operator!=(const StrVec &lhs, const StrVec &rhs);
+  friend bool operator<(const StrVec &lhs, const StrVec &rhs);
+  friend bool operator>(const StrVec &lhs, const StrVec &rhs);
+  friend bool operator<=(const StrVec &lhs, const StrVec &rhs);
+  friend bool operator>=(const StrVec &lhs, const StrVec &rhs);
 public:
   StrVec() : elements(nullptr), first_free(nullptr), cap(nullptr) { }
   StrVec(const StrVec &obj);
   StrVec(StrVec &&obj) noexcept;
-  StrVec(const std::initializer_list<String>& );
+  StrVec(const std::initializer_list<String> &lst);
   ~StrVec();
   StrVec &operator=(const StrVec &rhs);
+  StrVec &operator=(const std::initializer_list<String> &rhs);
   StrVec &operator=(StrVec &&rhs) noexcept;
+  String &operator[](std::size_t n);
+  const String &operator[](std::size_t n) const;
   void push_back(const String &s);
   void push_back(String &&s);
   std::size_t size() const {return first_free - elements;};
@@ -40,5 +47,9 @@ private:
 // declarations of friends
 bool operator==(const StrVec &lhs, const StrVec &rhs);
 bool operator!=(const StrVec &lhs, const StrVec &rhs);
+bool operator<(const StrVec &lhs, const StrVec &rhs);
+bool operator>(const StrVec &lhs, const StrVec &rhs);
+bool operator<=(const StrVec &lhs, const StrVec &rhs);
+bool operator>=(const StrVec &lhs, const StrVec &rhs);
 
 #endif

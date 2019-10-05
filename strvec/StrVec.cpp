@@ -13,19 +13,9 @@
 StrVec::StrVec(const StrVec &obj)
 {
   #ifndef NDEBUG
-  std::cout << "vec copy constructor\n";
+  std::cout << "StrVec copy constructor\n";
   #endif
   auto newdata = alloc_n_copy(obj.begin(), obj.end());
-  elements = newdata.first;
-  cap = first_free = newdata.second;
-}
-
-StrVec::StrVec(const std::initializer_list<String> &lst)
-{
-  #ifndef NDEBUG
-  std::cout << "vec initializer constructor\n";
-  #endif
-  auto newdata = alloc_n_copy(lst.begin(), lst.end());
   elements = newdata.first;
   cap = first_free = newdata.second;
 }
@@ -34,6 +24,16 @@ StrVec::StrVec(StrVec &&rhs) noexcept
   :elements(rhs.elements), first_free(rhs.first_free), cap(rhs.cap)
 {
   rhs.elements = rhs.first_free = rhs.cap = nullptr;
+}
+
+StrVec::StrVec(const std::initializer_list<String> &lst)
+{
+  #ifndef NDEBUG
+  std::cout << "StrVec initializer copy constructor\n";
+  #endif
+  auto newdata = alloc_n_copy(lst.begin(), lst.end());
+  elements = newdata.first;
+  cap = first_free = newdata.second;
 }
 
 //============================================================
@@ -51,10 +51,13 @@ StrVec::~StrVec()
 //     operators: copy-assignment, move-assignment,
 //
 //============================================================
-// copy-assignment / move-assignment operators
+//     assignment operators
 //============================================================
 StrVec &StrVec::operator=(const StrVec &rhs)
 {
+  #ifndef NDEBUD
+  std::cout << "operator= const StrVec &\n";
+  #endif
   auto data = alloc_n_copy(rhs.begin(), rhs.end());
   free();
   elements = data.first;
@@ -64,6 +67,9 @@ StrVec &StrVec::operator=(const StrVec &rhs)
 
 StrVec &StrVec::operator=(StrVec &&rhs) noexcept
 {
+  #ifndef NDEBUD
+  std::cout << "operator= StrVec &&\n";
+  #endif
   if (this != &rhs) {
     free();
     elements = rhs.elements;
@@ -73,6 +79,30 @@ StrVec &StrVec::operator=(StrVec &&rhs) noexcept
   }
   return *this;
 }
+
+StrVec &StrVec::operator=(const std::initializer_list<String> &rhs)
+{
+  auto newdata = alloc_n_copy(rhs.begin(), rhs.end());
+  free();
+  elements = newdata.first;
+  first_free = cap = newdata.second;
+  return *this;
+}
+
+//============================================================
+//  subscript
+//============================================================
+
+String &StrVec::operator[](std::size_t n)
+{
+  return elements[n];
+}
+
+const String &StrVec::operator[](std::size_t n) const
+{
+  return elements[n];
+}
+
 //============================================================
 // equality/inequality
 //============================================================
@@ -85,6 +115,26 @@ bool operator==(const StrVec &lhs, const StrVec &rhs)
 bool operator!=(const StrVec &lhs, const StrVec &rhs)
 {
   return !(lhs == rhs);
+}
+
+//============================================================
+//  relational operators
+//============================================================
+bool operator<(const StrVec &lhs, const StrVec &rhs)
+{
+  return std::lexicographical_compare(lhs.begin(), lhs.end(), rhs.begin(), rhs.end());
+}
+bool operator>(const StrVec &lhs, const StrVec &rhs)
+{
+  return rhs < lhs;
+}
+bool operator<=(const StrVec &lhs, const StrVec &rhs)
+{
+  return !(rhs < lhs);
+}
+bool operator>=(const StrVec &lhs, const StrVec &rhs)
+{
+  return !(lhs < rhs);
 }
 
 //============================================================
@@ -131,7 +181,7 @@ StrVec::alloc_n_copy(const String *b, const String *e)
 void StrVec::free()
 {
   #ifndef NDEBUG
-  std::cout << "vec free" << std::endl;
+  std::cout << "StrVec destroy deallocate" << std::endl;
   #endif
   if (elements) {
     // for (auto p = first_free; p != elements; /* empty */) {
@@ -151,7 +201,7 @@ void StrVec::chk_n_alloc()
 void StrVec::reallocate()
 {
   #ifndef NDEBUG
-  std::cout << "vec reallocate\n";
+  std::cout << "StrVec reallocate\n";
   #endif
   auto newcapacity = size() ? 2 * size() : 1;
   auto first = alloc.allocate(newcapacity);

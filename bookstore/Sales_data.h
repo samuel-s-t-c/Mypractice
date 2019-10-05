@@ -28,6 +28,7 @@ public:
   // operator
   Sales_data &operator=(const Sales_data &rhs);
   Sales_data &operator=(Sales_data &&rhs);
+  Sales_data &operator=(const std::string &rhs);
   Sales_data &operator+=(const Sales_data &rhs);
   // member functions
   std::string isbn() const {return bookNo;}
@@ -62,6 +63,14 @@ Sales_data &Sales_data::operator+=(const Sales_data &rhs)
 {
   units_sold += rhs.units_sold;
   revenue += rhs.revenue;
+  return *this;
+}
+
+inline
+Sales_data &Sales_data::operator=(const std::string &rhs)
+{
+  bookNo = rhs;
+  revenue = units_sold = 0;
   return *this;
 }
 
