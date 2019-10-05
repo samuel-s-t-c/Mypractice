@@ -10,5 +10,6 @@ int main()
   std::string s = {"123"};
   std::string *p = &s;
   std::cout << p[1] << std::endl;
+  std::string::iterator n;
   return 0;
 }

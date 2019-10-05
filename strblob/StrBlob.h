@@ -41,6 +41,14 @@ public:
     data.reset(new std::vector<std::string>(*obj.data));
     return *this;
   }
+  std::string &operator[](std::size_t n)
+  {
+    return (*data)[n];
+  }
+  const std::string &operator[](std::size_t n) const
+  {
+    return (*data)[n];
+  }
 
 
   //********** other methods **********
@@ -87,27 +95,40 @@ bool operator>=(const StrBlob &, const StrBlob &);
 //
 //============================================================
 class StrBlobPtr {
+  friend std::size_t operator-(const StrBlobPtr &lhs, const StrBlobPtr &rhs);
   friend bool operator==(const StrBlobPtr &lhs, const StrBlobPtr &rhs);
   friend bool operator!=(const StrBlobPtr &lhs, const StrBlobPtr &rhs);
   friend bool operator<(const StrBlobPtr &lhs, const StrBlobPtr &rhs);
   friend bool operator>(const StrBlobPtr &lhs, const StrBlobPtr &rhs);
   friend bool operator<=(const StrBlobPtr &lhs, const StrBlobPtr &rhs);
   friend bool operator>=(const StrBlobPtr &lhs, const StrBlobPtr &rhs);
+
 public:
-  StrBlobPtr() : index(0) { };
-  StrBlobPtr(StrBlob &ob, StrBlob::size_type pos = 0)
-    : wptr(ob.data), index(pos) { };
-  std::string &deref() const
+  StrBlobPtr() : index(0) { }
+  StrBlobPtr(const StrBlob &ob, StrBlob::size_type pos = 0)
+    : wptr(ob.data), index(pos) { }
+
+  char &operator[](std::size_t n) {return (*wptr.lock())[index][n];}
+  const char &operator[](std::size_t n) const {return (*wptr.lock())[index][n];}
+  StrBlobPtr operator+(std::size_t n);
+  StrBlobPtr &operator+=(std::size_t n);
+  StrBlobPtr operator-(std::size_t n);
+  StrBlobPtr &operator-=(std::size_t n);
+  StrBlobPtr &operator++();//prefix increment
+  StrBlobPtr &operator--();//prefix decrement
+  StrBlobPtr operator++(int);//postfix increment
+  StrBlobPtr operator--(int);//postfix decrement
+  std::string &operator*() const
   {
     auto p = check(index, "dereference past end");
     return (*p)[index];
   }
-  StrBlobPtr &incre()
+  std::string *operator->() const
   {
-    check(index, "increment past end of StrBlobPtr");
-    ++index;
-    return *this;
+    return &this->operator*();
   }
+
+
 private:
   std::weak_ptr<std::vector<std::string>> wptr;
   StrBlob::size_type index;
@@ -130,7 +151,7 @@ bool operator<(const StrBlobPtr &lhs, const StrBlobPtr &rhs);
 bool operator>(const StrBlobPtr &lhs, const StrBlobPtr &rhs);
 bool operator<=(const StrBlobPtr &lhs, const StrBlobPtr &rhs);
 bool operator>=(const StrBlobPtr &lhs, const StrBlobPtr &rhs);
-
+std::size_t operator-(const StrBlobPtr &lhs, const StrBlobPtr &rhs);
 
 //============================================================
 //
@@ -148,10 +169,14 @@ public:
   ConstStrBlobPtr() : index(0) { };
   ConstStrBlobPtr(const StrBlob &ob, StrBlob::size_type pos = 0)
     : wptr(ob.data), index(pos) { };
-  const std::string &deref() const
+  const std::string &operator*() const
   {
     auto p = check(index, "dereference past end");
     return (*p)[index];
+  }
+  const std::string *operator->() const
+  {
+    return &this->operator*();
   }
   ConstStrBlobPtr &incre()
   {
