@@ -1,14 +1,14 @@
 #include <iostream>
-#include <vector>
-
-int f()
-{return 1;}
 
 int main()
 {
-  std::vector<int> vi (100);
-  int &&r1 = f();
-  int &r2 = vi[0];
-  int &r3 = r1;
-  int &&r4 = vi[0] * f();
+  struct someclass {
+    someclass(double d= 0.0) : i(d) {}
+    operator double() {return i;}
+    operator float() {return i;}
+    long double i;
+  };
+  someclass obj;
+  // int e = obj;
+  float e = obj;
 }

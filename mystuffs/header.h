@@ -1,5 +1,5 @@
-#ifndef MYFUNCTIONH
-#define MYFUNCTIONH
+#ifndef MYHEADERH
+#define MYHEADERH
 
 #include <cstddef>
 #include <string>

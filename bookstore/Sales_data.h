@@ -30,6 +30,9 @@ public:
   Sales_data &operator=(Sales_data &&rhs);
   Sales_data &operator=(const std::string &rhs);
   Sales_data &operator+=(const Sales_data &rhs);
+  //conversion operators
+  explicit operator std::string() const {return bookNo;}
+  explicit operator double() const {return revenue;}
   // member functions
   std::string isbn() const {return bookNo;}
   Sales_data& combine(const Sales_data &);
