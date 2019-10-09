@@ -11,17 +11,16 @@
 #include "QueryResult.h"
 
 class TextQuery {
-  using line_no = std::vector<std::string>::size_type;
 public:
+  using line_no = std::vector<std::string>::size_type;
   TextQuery(std::ifstream &infile);
-  QueryResult query(const std::string &word);
+  QueryResult query(const std::string &word) const;
   void display_map();
 
 private:
   std::shared_ptr<std::vector<std::string>> content;
-  std::map<std::string,
-           std::shared_ptr<std::set<line_no>>> queryMap;
-  static std::string cleanup_str(const std::string&);
+  std::map<std::string, std::shared_ptr<std::set<line_no>>> queryMap;
+  std::string cleanup_str(const std::string&) const;
 
 };
 
@@ -43,7 +42,8 @@ TextQuery::TextQuery(std::ifstream &infile)
   }
 }
 
-std::string TextQuery::cleanup_str(const std::string&line)
+inline
+std::string TextQuery::cleanup_str(const std::string &line) const
 {
   std::string output;
   for (auto &i : line) {
@@ -56,13 +56,13 @@ std::string TextQuery::cleanup_str(const std::string&line)
 }
 
 
-QueryResult TextQuery::query(const std::string &word)
+QueryResult TextQuery::query(const std::string &word) const
 {
   static std::shared_ptr<std::set<line_no>> nodata (new std::set<line_no>);
-  auto loc = queryMap.find(word);
+  auto loc = queryMap.find(cleanup_str(word));
   if (loc == queryMap.end())
-    return QueryResult(cleanup_str(word), content, nodata);
+    return QueryResult(word, content, nodata);
   else
-    return QueryResult(cleanup_str(word), content, queryMap[cleanup_str(word)]);
+    return QueryResult(word, content, queryMap.at(cleanup_str(word)));
 }
 #endif
