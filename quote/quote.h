@@ -1,7 +1,10 @@
 #ifndef QUOTEH
 #define QUOTEH
+
 #include <string>
 #include <iostream>
+#include <set>
+#include <memory>
 
 //************************************************************
 //
@@ -51,10 +54,11 @@ public:
 
   //**********methods**********
   std::string isbn() const {return bookNo;}
-  virtual double net_price(std::size_t n) const
-  {return n * price;}
-  virtual void debug() const
-  {std::cout << "bookNo: " << bookNo << " # price: " << price;}
+  virtual double net_price(std::size_t n) const {return n * price;}
+  virtual void debug() const {
+    std::cout << "bookNo: " << bookNo << " # price: " << price;}
+  virtual Quote *clone() const &{return new Quote(*this);}
+  virtual Quote *clone() && {return new Quote(std::move(*this));}
 
 private:
   std::string bookNo;
@@ -89,6 +93,7 @@ Quote &Quote::operator=(Quote &&rhs)
   }
   return *this;
 }
+
 
 //************************************************************
 //                    Disc_quote
@@ -213,8 +218,10 @@ public:
   }
 
   //**********methods**********
-  double net_price(std::size_t n) const override;
-  void debug() const override;
+  virtual double net_price(std::size_t n) const override;
+  virtual void debug() const override;
+  virtual Bulk_quote *clone() const & override{return new Bulk_quote(*this);}
+  virtual Bulk_quote *clone() && override {return new Bulk_quote(std::move(*this));}
 
 };
 
@@ -292,8 +299,10 @@ public:
   }
 
   //**********methods**********
-  double net_price(std::size_t n) const override;
-  void debug() const override;
+  virtual double net_price(std::size_t n) const override;
+  virtual void debug() const override;
+  virtual Limited_quote *clone() const & override{return new Limited_quote(*this);}
+  virtual Limited_quote *clone() && override {return new Limited_quote(std::move(*this));}
 
 };
 
@@ -313,6 +322,49 @@ void Limited_quote::debug() const
 {
   std::cout << "bookNo: " << isbn() << " | price: " << price
             << " | max_qtr: " << quantity << " | discount: " << discount;
+}
+
+//************************************************************
+//
+//                    Basket
+//
+//************************************************************
+
+class Basket {
+
+public:
+  //**********methods**********
+  void add_item(const Quote &obj);
+  void add_item(Quote &&obj);
+  double total_receipt(std::ostream &os) const;
+
+private:
+  static bool compare(const std::shared_ptr<Quote> &lhs, const std::shared_ptr<Quote> &rhs) {return lhs->isbn() < rhs->isbn();}
+  std::multiset<std::shared_ptr<Quote>, decltype(compare)*> items {compare};
+};
+
+//**********inline definitions**********
+//**********methods**********
+inline
+void Basket::add_item(const Quote &obj)
+{
+  items.insert(std::shared_ptr<Quote>(obj.clone()));
+}
+
+inline
+void Basket::add_item(Quote &&obj)
+{
+  items.insert(std::shared_ptr<Quote>(std::move(obj).clone()));
+}
+
+inline
+double Basket::total_receipt(std::ostream &os) const
+{
+  double sum = 0.0;
+  for(auto iter = items.cbegin(); iter != items.cend(); iter = items.upper_bound(*iter))
+    sum += price_total(os, **iter, items.count(*iter));
+  os << "Total Sale: " << sum ;
+  return sum;
 }
 
 #endif
