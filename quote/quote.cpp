@@ -13,10 +13,7 @@ double price_total(std::ostream &os, const Quote &obj, std::size_t n)
 
 int main()
 {
-  // Quote o ("Quote", 1);
-  Bulk_quote o ("Bulk_quote", 1, 1, 0.1);
-  // Limited_quote o ("Limited_quote", 1, 1, 0.1);
-  // Disc_quote o ("Disc_quote", 1, 1, 0.1);
-  price_total(std::cout, o, 2);
+  Bulk_quote p("Bulk", 2, 1, 0.2);
+  price_total(std::cout , p, 1);
   std::cout << std::endl;
 }
