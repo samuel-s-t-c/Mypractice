@@ -66,3 +66,4 @@ QueryResult TextQuery::query(const std::string &word) const
     return QueryResult(word, content, queryMap.at(cleanup_str(word)));
 }
 #endif
+
