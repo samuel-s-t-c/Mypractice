@@ -19,13 +19,13 @@ public:
     : word(w), file(f), lineNumbers(r) { }
 
   //**********methods**********
-  std::set<line_no>::iterator begin() {
+  std::set<line_no>::iterator begin() const {
     return lineNumbers->begin();}
-  std::set<line_no>::const_iterator begin() const {
+  std::set<line_no>::const_iterator cbegin() const {
     return lineNumbers->cbegin();}
-  std::set<line_no>::iterator end() {
+  std::set<line_no>::iterator end() const{
     return lineNumbers->end();}
-  std::set<line_no>::const_iterator end() const {
+  std::set<line_no>::const_iterator cend() const {
     return lineNumbers->cend();}
   std::shared_ptr<std::vector<std::string>> &get_file() {
     return file;}
