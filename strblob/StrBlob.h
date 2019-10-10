@@ -113,7 +113,7 @@ public:
   StrBlobPtr operator+(std::size_t n);
   StrBlobPtr &operator+=(std::size_t n);
   StrBlobPtr operator-(std::size_t n);
-  StrBlobPtr &operator-=(std::size_t n);
+
   StrBlobPtr &operator++();//prefix increment
   StrBlobPtr &operator--();//prefix decrement
   StrBlobPtr operator++(int);//postfix increment
