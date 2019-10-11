@@ -7,9 +7,7 @@
 
 int main()
 {
-  std::string s = {"123"};
-  std::string *p = &s;
-  std::cout << p[1] << std::endl;
-  std::string::iterator n;
+  std::vector<char> i = {'2'};
+  std::cout << i[39] << std::endl;
   return 0;
 }

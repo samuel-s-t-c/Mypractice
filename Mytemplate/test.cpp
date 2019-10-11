@@ -1,13 +1,9 @@
 #include "Blob.h"
 #include <iostream>
 
-template<typename> void fun()
-{
-  std::cout << "i" << std::endl;
-}
-
 int main()
 {
-  fun<int>();
+  Blob<int> a, b = {1,2, 3};
+  std::cout << (a==b) << std::endl;
   return 0;
 }
