@@ -10,6 +10,16 @@
 #include <sstream>
 #include "QueryResult.h"
 
+class DebugDelete {
+public:
+  DebugDelete(std::ostream &s = std::cerr) : os(s) {}
+  template <typename T> void operator()(T *p) const {
+    os << "Deleting the shared_ptr" << std::endl;
+    delete p;
+  }
+private:
+  std::ostream &os;
+};
 class TextQuery {
 public:
   using line_no = std::vector<std::string>::size_type;
@@ -25,7 +35,7 @@ private:
 };
 
 TextQuery::TextQuery(std::ifstream &infile)
-  : content(new std::vector<std::string>)
+  : content(new std::vector<std::string>, DebugDelete())
 {
   std::string line;
   line_no number = 0;

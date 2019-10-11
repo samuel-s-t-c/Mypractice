@@ -39,6 +39,7 @@ public:
   Blob() : p_data(std::make_shared<std::vector<T>>()) { }
   Blob(std::initializer_list<T> il) : p_data(std::make_shared<std::vector<T>>(il)) { }
   Blob(const Blob &obj) : p_data(std::make_shared<std::vector<T>>(*obj.p_data)) { }
+  template <typename IT> Blob(IT b, IT e);
 
   //**********menthods**********
   //**********assignment**********
@@ -73,6 +74,13 @@ private:
   void check(size_type i, const std::string &msg) const;
 };
 
+//**********constructors**********
+template <typename T>
+template <typename IT> inline
+Blob<T>::Blob(IT b, IT e)
+  :p_data(std::make_shared<T>(b, e)) {}
+
+//**********operators**********
 template <typename T>
 bool operator==(const Blob<T> &lhs, const Blob<T> &rhs)
 {
