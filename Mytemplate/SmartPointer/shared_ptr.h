@@ -132,19 +132,19 @@ private:
 };
 
 template <typename T>
-shared_ptr<T> make_shared()
+shared_ptr<T> makeshared()
 {
   return shared_ptr<T>(new T());
 }
 
 template <typename T>
-shared_ptr<T> make_shared(std::initializer_list<typename T::value_type> ls)
+shared_ptr<T> makeshared(std::initializer_list<typename T::value_type> ls)
 {
   return shared_ptr<T>(new T(ls));
 }
 
 template <typename T>
-shared_ptr<T> make_shared(const T &obj)
+shared_ptr<T> makeshared(const T &obj)
 {
   return shared_ptr<T>(new T(obj));
 }

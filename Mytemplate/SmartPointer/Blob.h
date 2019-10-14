@@ -286,6 +286,7 @@ int main()
 {
   Blob<int> b = {1,2,3,4};
   {
+    Blob<int> q(b);
     auto p = b;
     b = std::move(p);
   }
