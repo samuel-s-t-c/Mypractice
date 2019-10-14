@@ -44,7 +44,7 @@ public:
   //**********constructors**********
   Blob() : p_data(make_shared<std::vector<T>>()) { }
   Blob(std::initializer_list<T> il) : p_data(make_shared<std::vector<T>>(il)) { }
-  Blob(const Blob &obj) : p_data(new std::vector<T>(*(obj.p_data))) { }
+  Blob(const Blob &obj) : p_data(make_shared<std::vector<T>>(*(obj.p_data))) { }
   template <typename IT> Blob(IT b, IT e);
 
   //**********menthods**********
@@ -106,14 +106,15 @@ void Blob<T>::check(size_type i, const std::string &msg) const
 template <typename T> inline
 Blob<T> &Blob<T>::operator=(const Blob<T> &rhs)
 {
-  p_data.reset(rhs.p_data);
+  p_data = make_shared<std::vector<T>>(*(rhs.p_data));
   return *this;
 }
 
 template <typename T> inline
 Blob<T> &Blob<T>::operator=(Blob<T> &&rhs)
 {
-  p_data.reset(std::move(rhs.p_data));
+  if (this != &rhs)
+    p_data = rhs.p_data;
   return *this;
 }
 
@@ -281,4 +282,13 @@ ConstBlobPtr<T> Blob<T>::cend() const
   return ConstBlobPtr<T>(p_data, p_data->size());
 }
 
+int main()
+{
+  Blob<int> b = {1,2,3,4};
+  {
+    auto p = b;
+    b = std::move(p);
+  }
+  return 0;
+}
 #endif

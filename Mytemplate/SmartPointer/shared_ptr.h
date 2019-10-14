@@ -96,7 +96,7 @@ public:
     *this = temp;
   }
 
-  void reset(shared_ptr &&p){
+  void reset(const shared_ptr &p){
     if (this != &p) {
       free();
       p_data = p.p_data;
@@ -131,17 +131,20 @@ private:
   }
 };
 
-template <typename T> shared_ptr<T> make_shared()
+template <typename T>
+shared_ptr<T> make_shared()
 {
   return shared_ptr<T>(new T());
 }
 
-template <typename T> shared_ptr<T> make_shared(std::initializer_list<typename T::value_type> ls)
+template <typename T>
+shared_ptr<T> make_shared(std::initializer_list<typename T::value_type> ls)
 {
   return shared_ptr<T>(new T(ls));
 }
 
-template <typename T> shared_ptr<T> make_shared(const T& obj)
+template <typename T>
+shared_ptr<T> make_shared(const T &obj)
 {
   return shared_ptr<T>(new T(obj));
 }
