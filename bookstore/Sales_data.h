@@ -3,9 +3,11 @@
 
 #include <string>
 #include <iostream>
+#include <functional>
 
 class Sales_data {
   // friend declarations
+  friend struct std::hash<Sales_data>;
   friend Sales_data operator+(Sales_data, const Sales_data&);
   friend std::ostream &operator<<(std::ostream&, const Sales_data&);
   friend std::istream &operator>>(std::istream&, Sales_data&);
@@ -75,6 +77,14 @@ Sales_data &Sales_data::operator=(const std::string &rhs)
   bookNo = rhs;
   revenue = units_sold = 0;
   return *this;
+}
+namespace std {
+  template <>
+  struct hash<Sales_data> {
+    typedef Sales_data argument_type;
+    typedef size_t result_type;
+    size_t operator()(const Sales_data &obj) const;
+  };
 }
 
 #endif

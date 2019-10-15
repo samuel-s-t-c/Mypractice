@@ -21,8 +21,10 @@ public:
   String(const String &rhs);
   String(String &&rhs) noexcept;
   String(const char[]);
+
   //destructor
   ~String(){free();}
+
   //operator
   String &operator=(const String &rhs);
   String &operator=(String &&rhs) noexcept;

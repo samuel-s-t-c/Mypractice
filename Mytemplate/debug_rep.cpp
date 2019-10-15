@@ -21,11 +21,13 @@ template <typename T> std::string debug_rep(T *p)
     ret << " null pointer";
   return ret.str();
 }
-std::string debug_rep(char *p)
+template <>
+std::string debug_rep<char>(char *p)
 {
   return debug_rep(std::string(p));
 }
-std::string debug_rep(const char *p)
+template<>
+std::string debug_rep<const char>(const char *p)
 {
   return debug_rep(std::string(p));
 }

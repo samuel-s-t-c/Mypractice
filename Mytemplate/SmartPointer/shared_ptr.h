@@ -3,6 +3,7 @@
 
 #include <initializer_list>
 #include <vector>
+#include <utility>
 class deleter {
 public:
   virtual void operator()(void *obj) = 0;
@@ -131,22 +132,22 @@ private:
   }
 };
 
-template <typename T>
-shared_ptr<T> makeshared()
+template <typename T, typename... Args> inline
+shared_ptr<T> makeshared(Args&&... args)
 {
-  return shared_ptr<T>(new T());
+  return shared_ptr<T>(new T(std::forward<Args>(args)...));
 }
 
-template <typename T>
-shared_ptr<T> makeshared(std::initializer_list<typename T::value_type> ls)
-{
-  return shared_ptr<T>(new T(ls));
-}
+// template <typename T>
+// shared_ptr<T> makeshared(std::initializer_list<typename T::value_type> ls)
+// {
+//   return shared_ptr<T>(new T(ls));
+// }
 
-template <typename T>
-shared_ptr<T> makeshared(const T &obj)
-{
-  return shared_ptr<T>(new T(obj));
-}
+// template <typename T>
+// shared_ptr<T> makeshared(const T &obj)
+// {
+//   return shared_ptr<T>(new T(obj));
+// }
 
 #endif

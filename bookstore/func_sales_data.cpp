@@ -76,3 +76,12 @@ Sales_data add(const Sales_data&lhs, const Sales_data&rhs)
 {
   return lhs + rhs;
 }
+
+namespace std {
+  size_t hash<Sales_data>::operator()(const Sales_data &obj) const
+  {
+    return hash<string>()(obj.bookNo) ^
+      hash<unsigned>()(obj.units_sold) ^
+      hash<double>()(obj.revenue);
+  }
+}

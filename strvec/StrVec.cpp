@@ -29,7 +29,7 @@ StrVec::StrVec(StrVec &&rhs) noexcept
 StrVec::StrVec(const std::initializer_list<String> &lst)
 {
   #ifndef NDEBUG
-  std::cout << "StrVec initializer copy constructor\n";
+  std::cout << "StrVec initializer_list copy constructor\n";
   #endif
   auto newdata = alloc_n_copy(lst.begin(), lst.end());
   elements = newdata.first;

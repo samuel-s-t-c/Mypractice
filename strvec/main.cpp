@@ -7,7 +7,10 @@
 
 int main()
 {
-  std::vector<char> i = {'2'};
-  std::cout << i[39] << std::endl;
+  StrVec vec {"123"};
+  vec.emplace_back(10, 'v');
+  for (auto &i :vec)
+    std::cout << i << std::endl;
+  std::cout << std::endl;
   return 0;
 }

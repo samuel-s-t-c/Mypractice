@@ -282,14 +282,14 @@ ConstBlobPtr<T> Blob<T>::cend() const
   return ConstBlobPtr<T>(p_data, p_data->size());
 }
 
-int main()
-{
-  Blob<int> b = {1,2,3,4};
-  {
-    Blob<int> q(b);
-    auto p = b;
-    b = std::move(p);
-  }
-  return 0;
-}
+// int main()
+// {
+//   Blob<int> b = {1,2,3,4};
+//   {
+//     Blob<int> q(b);
+//     auto p = b;
+//     b = std::move(p);
+//   }
+//   return 0;
+// }
 #endif

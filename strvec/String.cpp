@@ -54,13 +54,14 @@ std::pair<char*, char*> String::alloc_n_copy(const char *b, const char *e)
 //============================================================
 
 String::String(std::size_t n, char c)
-  : begin_(alloc.allocate(n)), end_(begin_), cap(begin_ + n)
+  : begin_(alloc.allocate(n)), end_(begin_ + n), cap(begin_ + n)
 {
   #ifndef NDEBUG
-  std::cout << "default/(num, char) constructor\n";
+  std::cout << "String default/(num, char) constructor\n";
   #endif
   if ( c != '\0')
-    alloc.construct(begin_, c);
+    for (auto i = begin_; i != end_ ; ++i)
+      alloc.construct(i, c);
 }
 
 String::String(const String &rhs)
@@ -85,7 +86,7 @@ String::String(String &&rhs) noexcept
 String::String(const char cstr[] )
 {
   #ifndef NDEBUG
-  std::cout << "stinrg c-String constructor\n";
+  std::cout << "Stinrg c-String constructor\n";
   #endif
   auto end = cstr - 1;
   while (*++end != '\0')
