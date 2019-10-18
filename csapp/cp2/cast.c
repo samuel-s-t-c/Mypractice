@@ -4,8 +4,8 @@ typedef unsigned char *byte_pointer;
 
 void show_bytes(byte_pointer start, size_t len)
 {
-  for (size_t i = 0; i < len; i++)
-    printf(" %.2x", start[i]);
+  for (size_t i = len; i > 0; --i)
+    printf(" %.2x", start[i-1]);
   printf("\n");
 }
 
@@ -35,5 +35,13 @@ void test_show_byte(int val)
 
 int main()
 {
-  show_bytes("abcdef", 7);
+  unsigned ui = 0x86;
+  printf("0x");
+  show_bytes((byte_pointer)&ui, sizeof(unsigned int));
+  ui = ui << 24;
+  printf("0x");
+  show_bytes((byte_pointer)&ui, sizeof(unsigned int));
+  int i = (int)(ui) >> 24;
+  printf("0x");
+  show_bytes((byte_pointer)&i, sizeof(unsigned int));
 }
