@@ -34,14 +34,14 @@ void test_show_byte(int val)
   show_float(fval);
   show_pointer(pval);
 }
+
 int main()
 {
-  int a = -2;
-  int b = 3;
-  printf("%d\n", a % b );
-  printf("%d\n", (a % b + b) % b);
-  /* char c = 0xff; */
-  /* c += 0x81; */
-  /* show_bytes((byte_pointer)&c, sizeof(unsigned char)); */
+  /* int a = -2; */
+  /* int b = 3; */
+  /* printf("%d\n", a % b ); */
+  /* printf("%d\n", (a % b + b) % b); */
+  float c = 3;
+  show_bytes((byte_pointer)&c, sizeof(float));
   return 0;
 }
