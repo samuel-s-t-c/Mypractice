@@ -15,8 +15,7 @@ foo
 bar
 
 (defun circle-area (radix)
-  (let ((pi 3.1415926) area))
-    (message "直径为%.2f的圆面积是%.2f"radix area)))
-
-(circle-area 3)
+  (let ((pi 3.1415926)
+        area)
+  (message "直径为%.2f的圆面积是%.2f"radix area)))
 
