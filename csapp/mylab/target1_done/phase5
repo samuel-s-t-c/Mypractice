@@ -1,0 +1,25 @@
+30 30 30 30 30 30 30 30 
+30 30 30 30 30 30 30 30 
+30 30 30 30 30 30 30 30 
+30 30 30 30 30 30 30 30 
+30 30 30 30 30 30 30 30 
+//func
+//func
+//func
+35 39 62 39 39 37 66 61
+00
+
+
+4019a0 mov ax di; ret;
+4019db movl ax dx; ret;
+401a07 movl sp ax; ret;
+4019a7 popq ax;ret;
+4019d6 lea (%di, %si,1) ax;ret;
+401a11 movl cx si;ret;
+
+pop ax
+di + si -> ax
+ax -> di
+ax -> dx
+sp -> ax
+cx -> si
