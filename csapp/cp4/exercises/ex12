@@ -1,0 +1,6 @@
+word Mid3 = [
+     C <= A && A <= B : A;
+     B <= A && A <= C : A;
+     C <= B && B <= A : B;
+     A <= B && B <= C : B;
+     1                : C;
