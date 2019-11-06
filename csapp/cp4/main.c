@@ -1,6 +1,6 @@
 #include <stdio.h>
 
-int main()
+int main() //<<link>>
 {
   int n = 3;
   while (n != 0) {
@@ -9,3 +9,43 @@ int main()
   }
   return 0;
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//<<end>>

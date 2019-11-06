@@ -1,13 +1,267 @@
 #+STARTUP: content
-* ISA
-  :LOGBOOK:
-  CLOCK: [2019-11-05 Tue 22:45]--[2019-11-05 Tue 22:58] =>  0:13
-  CLOCK: [2019-11-05 Tue 22:14]--[2019-11-05 Tue 22:40] =>  0:26
-  CLOCK: [2019-11-05 Tue 15:53]--[2019-11-05 Tue 16:18] =>  0:25
-  :END:
+* Y86-64 instruction set
+** bytes representations
+   | bytes            | 0 |  0 | 1      | 2    | 3    | 4    | 5    | 6    | 7    | 8 | 9 |
+   |------------------+---+----+--------+------+------+------+------+------+------+---+---|
+   | halt             | 0 |  0 |        |      |      |      |      |      |      |   |   |
+   | nop              | 1 |  0 |        |      |      |      |      |      |      |   |   |
+   | rrmovq rA, rB    | 2 |  0 | rA, rB |      |      |      |      |      |      |   |   |
+   | irmovq V, rB     | 3 |  0 | F, rB  | V    | V    | V    | V    | V    | V    | V | V |
+   | rmmovq rA, D(rB) | 4 |  0 | rA, rB | D    | D    | D    | D    | D    | D    | D | D |
+   | mrmovq D(rB), rA | 5 |  0 | rA, rB | D    | D    | D    | D    | D    | D    | D | D |
+   | OPq rA, rB       | 6 | fn | rA, rB |      |      |      |      |      |      |   |   |
+   | jxx Dest         | 7 | fn | Dest   | Dest | Dest | Dest | Dest | Dest | Dest |   |   |
+   | cmovxx rA, rB    | 2 | fn | rA, rB |      |      |      |      |      |      |   |   |
+   | call Dest        | 8 |  0 | Dest   | Dest | Dest | Dest | Dest | Dest | Dest |   |   |
+   | ret              | 9 |  0 |        |      |      |      |      |      |      |   |   |
+   | pushq rA         | A |  0 | rA, F  |      |      |      |      |      |      |   |   |
+   | popq rA          | B |  0 | rA, F  |      |      |      |      |      |      |   |   |
+   |------------------+---+----+--------+------+------+------+------+------+------+---+---|
+*** Function codes for Y86-64 instruction set 
+    | Operations | bit0 | bit1 | Branches | bit0 | bit1 | Moves  | bit0 | bit1 |
+    |------------+------+------+----------+------+------+--------+------+------|
+    | addq       |    6 |    0 | jmp      |    7 |    0 | rrmovq |    2 |    0 |
+    | subq       |    6 |    1 | jle      |    7 |    1 | cmovle |    2 |    1 |
+    | andq       |    6 |    2 | jl       |    7 |    2 | cmovl  |    2 |    2 |
+    | xorq       |    6 |    3 | je       |    7 |    3 | cmove  |    2 |    3 |
+    |            |      |      | jne      |    7 |    4 | cmovne |    2 |    4 |
+    |            |      |      | jge      |    7 |    5 | cmovge |    2 |    5 |
+    |            |      |      | jg       |    7 |    6 | cmovg  |    2 |    6 |
+    |------------+------+------+----------+------+------+--------+------+------|
+*** Y86-64 program register identifiers
+    | Number | Register name | Number | Register name |
+    |--------+---------------+--------+---------------|
+    |      0 | %rax          | 8      | %r8           |
+    |      1 | %rcx          | 9      | %r9           |
+    |      2 | %rdx          | A      | %r10          |
+    |      3 | %rbx          | B      | %r11          |
+    |      4 | %rsp          | C      | %r12          |
+    |      5 | %rbp          | D      | %r13          |
+    |      6 | %rsi          | E      | %r14          |
+    |      7 | %rdi          | F      | No register   |
+** Computations in sequential implementation of Y86-64 instructions 
+   | Stage      | OPq rA, rB            | irmovq V, rB           | rrmovq rA, rB         |
+   |------------+-----------------------+------------------------+-----------------------|
+   | Fetch      | icode:ifun <-- M1[PC] | icode:icfun <-- M1[PC] | icdoe:ifun <-- M1[PC] |
+   |            | rA:rB <-- M1[PC+1]    | rA:rB <-- M1[PC+1]     | rA:rB <--M1[PC+1]     |
+   |            |                       | valC <-- M8[PC+2]      |                       |
+   |            | valP <-- PC+2         | valP <-- PC+10         | valP <-- PC+2         |
+   |------------+-----------------------+------------------------+-----------------------|
+   | Decode     | valA <-- R[rA]        |                        | valA <-- R[rA]        |
+   |            | valB <-- R[rB]        |                        |                       |
+   |------------+-----------------------+------------------------+-----------------------|
+   | Execute    | valE <-- valB OP valA | valE <-- 0 + valC      | valE <-- 0 + valA     |
+   |            | Set CC                |                        |                       |
+   |------------+-----------------------+------------------------+-----------------------|
+   | Memory     |                       |                        |                       |
+   |------------+-----------------------+------------------------+-----------------------|
+   | Write back | R[rB] <-- valE        | R[rB] <-- valE         | R[rB] <-- valE        |
+   |            |                       |                        |                       |
+   |------------+-----------------------+------------------------+-----------------------|
+   | PC update  | PC <-- valP           | PC <-- valP            | PC <-- valP           |
+   |------------+-----------------------+------------------------+-----------------------|
 
-| bytes         | 0 | 1 |  2 |  3 | 4 | 5 | 6 | 7 | 8 | 9 |
-|---------------+---+---+----+----+---+---+---+---+---+---|
-| halt          | 0 | 0 |    |    |   |   |   |   |   |   |
-| nop           | 1 | 0 |    |    |   |   |   |   |   |   |
-| rrmovq rA, rB | 2 | 0 | rA | rB |   |   |   |   |   |   |
+   | Stage      | rmmovq rA, D(rB)      | mrmovq D(rB), rA      |
+   |------------+-----------------------+-----------------------|
+   | Fetch      | icode:ifun <-- M1[PC] | icode:ifun <-- M1[PC] |
+   |            | rA:rB <-- M1[PC+1]    | rA:rB <-- M1[PC+1]    |
+   |            | valC <-- M8[PC+2]     | valC <-- M8[PC+2]     |
+   |            | valP <-- PC+10        | valP <-- PC+10        |
+   |------------+-----------------------+-----------------------|
+   | Decode     | valA <-- R[rA]        |                       |
+   |            | valB <-- R[rB]        | valB <-- R[rB]        |
+   |------------+-----------------------+-----------------------|
+   | Execute    | valE <-- valB + valC  | valE <-- valB + valC  |
+   |            |                       |                       |
+   |------------+-----------------------+-----------------------|
+   | Memory     | M8[valE] <-- valA     | valM <-- M8[valE]     |
+   |------------+-----------------------+-----------------------|
+   | Write back |                       |                       |
+   |            |                       | R[rA] <-- valM        |
+   |------------+-----------------------+-----------------------|
+   | PC update  | PC <-- valP           | PC <-- valP           |
+   |------------+-----------------------+-----------------------|
+
+   | Stage      | pushq rA              | popq rA               |
+   |------------+-----------------------+-----------------------|
+   | Fetch      | icode:ifun <-- M1[PC] | icode:ifun <-- M1[PC] |
+   |            | rA:rB <-- M1[PC+1]    | rA:rB <-- M1[PC+1]    |
+   |            |                       |                       |
+   |            | valP <-- PC+2         | valP <-- PC+2         |
+   |------------+-----------------------+-----------------------|
+   | Decode     | valA <-- R[rA]        | valA <-- R[%rsp]      |
+   |            | valB <-- R[%rsp]      | valB <-- R[%rsp]      |
+   |------------+-----------------------+-----------------------|
+   | Execute    | valE <-- valB+(-8)    | valE <-- valB+8       |
+   |            |                       |                       |
+   |------------+-----------------------+-----------------------|
+   | Memory     | M8[valE] <-- valA     | valM <-- M8[valA]     |
+   |------------+-----------------------+-----------------------|
+   | Write back |                       | R[%rsp] <-- valE      |
+   |            |                       | R[rA] <-- valM        |
+   |------------+-----------------------+-----------------------|
+   | PC update  | PC <-- valP           | PC <-- valP           |
+   |------------+-----------------------+-----------------------|
+
+   | Stage      | jxx Dest                 | call Dest             | ret                   |
+   |------------+--------------------------+-----------------------+-----------------------|
+   | Fetch      | icode:ifun <-- M1[PC]    | icode:ifun <-- M1[PC] | icode:ifun <-- M1[PC] |
+   |            |                          |                       |                       |
+   |            | valC <-- M8[PC+1]        | valC <-- M8[PC+1]     |                       |
+   |            | valP <-- PC+8            | valP <-- PC+8         | valP <-- PC+1         |
+   |------------+--------------------------+-----------------------+-----------------------|
+   | Decode     |                          |                       | valA <-- R[%rsp]      |
+   |            |                          | valB <-- R[%rsp]      | valB <-- R[%rsp]      |
+   |------------+--------------------------+-----------------------+-----------------------|
+   | Execute    |                          | valE <-- valB + (-8)  | valE <-- valB + 8     |
+   |            | Cnd <-- Cond(CC, ifun)   |                       |                       |
+   |------------+--------------------------+-----------------------+-----------------------|
+   | Memory     |                          | M8[valE] <-- valP     | valM <-- M8[valA]     |
+   |------------+--------------------------+-----------------------+-----------------------|
+   | Write back |                          | R[%rsp] <-- valE      | R[%rsp] <-- valE      |
+   |------------+--------------------------+-----------------------+-----------------------|
+   | PC update  | PC <-- Cnd ? valC : valP | PC <-- valC           | PC <-- valM           |
+   |------------+--------------------------+-----------------------+-----------------------|
+
+   | Stage      | rrmovq rA, rB         | cmovxx rA, rB          |
+   |------------+-----------------------+------------------------|
+   | Fetch      | icdoe:ifun <-- M1[PC] | icdoe:ifun <-- M1[PC]  |
+   |            | rA:rB <--M1[PC+1]     | rA:rB <--M1[PC+1]      |
+   |            |                       |                        |
+   |            | valP <-- PC+2         | valP <-- PC+2          |
+   |------------+-----------------------+------------------------|
+   | Decode     | valA <-- R[rA]        | valA <-- R[rA]         |
+   |            |                       | Cnd <-- Cond(CC, ifun) |
+   |------------+-----------------------+------------------------|
+   | Execute    | valE <-- 0 + valA     | valE <-- 0 + valA      |
+   |            |                       |                        |
+   |------------+-----------------------+------------------------|
+   | Memory     |                       |                        |
+   |------------+-----------------------+------------------------|
+   | Write back | R[rB] <-- valE        | if(Cnd) R[rB] <-- valE |
+   |            |                       |                        |
+   |------------+-----------------------+------------------------|
+   | PC update  | PC <-- valP           | PC <-- valP            |
+   |------------+-----------------------+------------------------|
+** PIPE Stage Implementations
+*** Control Signal Definitions 
+**** PC Selection and Fetch Stage
+     #+BEGIN_SRC HCL
+     ## Select PC
+     word f_pc = [
+              # Mispredicted branch. Fetch at incremented PC
+              M_icode == IJXX && !M_Cnd : M_valA;
+              # Completion of RET instruction
+              W_icode == IRET : W_calM;
+              # Default: Use predicted value of PC
+              1 : F_predPC;
+     ];
+    
+     word f_predPC = [
+              f_icdoe in {IJXX, ICALL} : f_valC;
+              1 : f_valP;
+     ];
+
+     word f_icode = [
+              imem_error : INOP;
+              1 : imem_icode;
+     ];
+    
+     word f_ifun = [
+              imem_error : FNONE;
+              1 : imem_ifun;
+     ];
+
+     bool instr_valid = 
+              f_icode in {INOP, IHALT, IRRMOVQ, IIRMOVQ, IMRMOVQ, IRMMOVQ, 
+                          IOPQ, IJXX, ICALL, IRET, IPUSHQ, IPOPQ};
+             
+     bool need_regids = 
+              f_icode in {IRRMOVQ, IIRMOVQ, IRMMOVQ, IMRMOVQ, IOPQ,
+                          IPUSHQ, IPOPQ};
+
+     bool need_valC =
+              f_icode in {IIRMOVQ, IJXX, ICALL, IRMMOVQ, IMRMOVQ};
+    
+     word f_stat = [
+              imem_error : SADR;
+              !instr_valid : SINS;
+              f_icode == IHALT : SHLT;
+              1 : SAOK;
+     ];
+             
+     #+END_SRC
+**** Decode Stage and Write back Stage
+     #+BEGIN_SRC HCL
+
+     word d_dstE = [
+               D_icode in {IRRMOVQ, IIRMOVQ, IOPQ} : D_rB;
+               D_icode in {IPOPQ, ICALL, IRET} : RRSP
+               1 : RNONE;
+     ];
+
+     word d_dstM = [
+               D_icode in {IMRMOVQ, IPOPQ} : D_rA;
+               1 : RNONE;
+     ];
+    
+     word d_srcA = [
+               D_icode in {IOPQ, IRRMOVQ, IRMMOVQ, IPUSHQ, } : D_rA;
+               D_icode in {IPOPQ, IRET} : RRSP;
+               1 : RNONE;
+     ];
+
+     word d_srcB = [
+               D_icode in {IMRMOVQ, IRMMOVQ, IOPQ} : D_rB;
+               D_icode in {IPUSHQ, IPOPQ, ICALL, IRET} : RRSP;
+               1 : RNONE;
+     ];
+
+     word d_valA = [
+               D_icode in {IJXX, ICALL} : D_valP;
+               d_srcA == e_dstE : e_valE;
+               d_srcA == M_dstM : m_valM;
+               d_srcA == M_dstE : M_valE;
+               d_srcA == W_dstM : W_valM;
+               d_srcA == W_dstE : W_valE;
+               1 : d_rvalA;
+     ];
+
+     word d_valB = [
+               d_srcB == e_dstE : e_valE;
+               d_srcB == M_dstM : m_valM;
+               d_srcB == M_dstE : M_valE;
+               d_srcB == W_dstM : W_valM;
+               d_srcB == W_dstW : W_valE;
+               1 : d_rvalB;
+     ];
+    
+     ## "stat" of write back stage 
+     word stat = [
+              W_stat == SBUB : SAOK;
+              1 : W_stat;
+     ];
+     #+END_SRC
+**** Execute Stage
+     #+BEGIN_SRC HCL
+     word aluA = [
+     ];
+
+     word aluB = [
+     ];
+     
+     word alufun = [
+     ];
+     
+     bool set_cc = ;
+     
+     word e_valA = E_valA;
+     
+     word e_dstE = [
+     ];
+
+     #+END_SRC
+**** Memory Stage
+     #+BEGIN_SRC HCL
+
+     #+END_SRC
