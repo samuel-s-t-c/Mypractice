@@ -131,10 +131,10 @@
    |            | valP <-- PC+2         | valP <-- PC+2          |
    |------------+-----------------------+------------------------|
    | Decode     | valA <-- R[rA]        | valA <-- R[rA]         |
-   |            |                       | Cnd <-- Cond(CC, ifun) |
+   |            |                       |                        |
    |------------+-----------------------+------------------------|
    | Execute    | valE <-- 0 + valA     | valE <-- 0 + valA      |
-   |            |                       |                        |
+   |            |                       | Cnd <-- Cond(CC, ifun) |
    |------------+-----------------------+------------------------|
    | Memory     |                       |                        |
    |------------+-----------------------+------------------------|
@@ -235,33 +235,100 @@
                d_srcB == W_dstW : W_valE;
                1 : d_rvalB;
      ];
-    
-     ## "stat" of write back stage 
-     word stat = [
-              W_stat == SBUB : SAOK;
-              1 : W_stat;
-     ];
      #+END_SRC
 **** Execute Stage
      #+BEGIN_SRC HCL
      word aluA = [
+              E_icode in {IOPQ, IRRMOVQ} : E_valA;
+              E_icode in {IIRMOVQ, IRMMOVQ, IMRMOVQ} : E_valC;
+              E_icode in {IPUSHQ, ICALL} : -8;
+              E_icode in {IPOPQ, IRET} : 8;
      ];
 
      word aluB = [
+              E_icode in {IOPQ, IRMMOVQ, IMRMOVQ, IPUSHQ, 
+              IPOPQ, ICALL, IRET} : E_valB;
+              E_icdoe in {IIRMOVQ, IRRMOVQ} : 0;
      ];
      
      word alufun = [
+              E_icode == IOPQ : E_ifun;
+              1 : ALUADD;
      ];
      
-     bool set_cc = ;
+     bool set_cc = E_icode == IOPQ &&
+              !m_stat in {SADR, SINS, SHLT} && 
+              !W_stat in {SADR, SINS, SHLT};
      
      word e_valA = E_valA;
      
      word e_dstE = [
+              E_icode == IRRMOVQ && !e_Cnd : RNONE;
+              1 : E_dstE;
      ];
 
      #+END_SRC
 **** Memory Stage
      #+BEGIN_SRC HCL
 
+     word mem_addr = [
+              M_icode in {IRMMOVQ, IMRMOVQ, IPUSHQ, ICALL} : M_valE;
+              M_icode in {IPOPQ, IRET} : M_valA;
+     ];
+
+     bool mem_read = M_icode in {IMRMOVQ, IPOPQ, IRET};
+
+     bool mem_write = M_icode in {IRMMOVQ, IPUSHQ, ICALL};
+
+     word m_stat = [
+              dmem_error : SADR;
+              1 : M_stat;
+     ];
+     #+END_SRC
+**** Write back Stage
+     #+BEGIN_SRC HCL
+     word w_dstE = W_dstE;
+     
+     word w_valE = W_valE;
+
+     word w_dstM = W_dstM;
+
+     word w_valM = W_vaLM;
+     
+     word Stat = [
+             W_stat == SBUB : SAOK;
+             1 : W_stat;
+     ];
+     #+END_SRC
+**** Pipeline Register Control
+     #+BEGIN_SRC HCL
+     bool F_bubble = 0;
+     bool F_stall = 
+              E_icode in {IMRMOVQ, IPOPQ} && 
+              E_dstM in {d_srcA, d_srcB} ||
+              IRET in {D_icdoe, E_icdoe, M_icdoe};
+     
+     bool D_stall = 
+              E_icode in {IMRMOVQ, IPOPQ} &&
+              E_dstM in {d_srcA, d_srcB};
+     
+     bool D_bubble =
+              (E_icode == IJXX && !e_Cnd) ||
+              (!(E_icode in {IMRMOVQ, IPOPQ &&
+                 E_dstM in {d_srcA, d_srcB}) &&
+               IRET in {D_icode, E_icdoe, M_icdoe});
+
+     bool E_bubble = 
+              (E_icode == IJXX && !e_Cnd) ||
+               E_icode in {IMRMOVQ, IPOPQ} &&
+               E_dstM in {d_srcA, d_srcB};
+     bool E_stall = 0;
+
+     bool M_bubble = m_stat in {SADR, SINS, SHLT} || 
+                     W_stat in {SADR, SINS, SHLT};
+     bool M_stall = 0;
+
+
+     bool W_stall = W_stat in {SADR, SINS, SHLT};
+     bool W_bubble = 0;
      #+END_SRC
