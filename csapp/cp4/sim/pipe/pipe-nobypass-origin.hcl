@@ -307,10 +307,9 @@ word Stat = [
 # Should I stall or inject a bubble into Pipeline Register F?
 # At most one of these can be true.
 bool F_bubble = 0;
-bool F_stall = 
+bool F_stall =
 	# Modify the following to stall the update of pipeline register F
-	d_srcA in {e_dstE, M_dstE, M_dstM, W_dstE, W_dstM} ||
-	d_srcB in {e_dstE, M_dstE, M_dstM, W_dstE, W_dstM} ||
+	0 ||
 	# Stalling at fetch while ret passes through pipeline
 	IRET in { D_icode, E_icode, M_icode };
 
@@ -318,8 +317,7 @@ bool F_stall =
 # At most one of these can be true.
 bool D_stall = 
 	# Modify the following to stall the instruction in decode
-	d_srcA in {e_dstE, M_dstE, M_dstM, W_dstE, W_dstM} ||
-	d_srcB in {e_dstE, M_dstE, M_dstM, W_dstE, W_dstM};
+	0;
 
 bool D_bubble =
 	# Mispredicted branch

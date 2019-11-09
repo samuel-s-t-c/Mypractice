@@ -1,4 +1,4 @@
-SIM=../pipe/psim
+SIM=../seq/sim
 TFLAGS=
 
 ISADIR = ../misc

@@ -1,0 +1,87 @@
+                            | # Execution begins at address 0 
+0x000:                      |   .pos 0
+0x000: 30f40002000000000000 |   irmovq stack, %rsp    # Set up stack pointer
+0x00a: 805800000000000000   |   call main             # Execute main program
+0x013: 00                   |   halt                  # Terminate program
+                            | 
+0x018:                      | .align 8
+0x018:                      | array:
+0x018: 0000000000000000     |   .quad 0x0000000000000000
+0x020: 0000000000000000     |   .quad 0x0000000000000000
+0x028: 0000000000000000     |   .quad 0x0000000000000000
+0x030: 0000000000000000     |   .quad 0x0000000000000000
+0x038: 0000000000000000     |   .quad 0x0000000000000000
+0x040: 0000000000000000     |   .quad 0x0000000000000000
+0x048: 0000000000000000     |   .quad 0x0000000000000000
+0x050: 0000000000000000     |   .quad 0x0000000000000000
+                            | 
+0x058:                      | main:
+0x058: 30fa1800000000000000 |   irmovq array, %r10
+0x062: 30f3ffffffffffffffff |   irmovq $-1, %rbx
+0x06c: 30fc0800000000000000 |   irmovq $8, %r12
+0x076: 30fd0100000000000000 |   irmovq $1, %r13
+0x080:                      | loop:
+0x080: 2037                 |   rrmovq %rbx, %rdi
+0x082: 80d800000000000000   |   call switchv         # switchv(-1)
+0x08b: 400a0000000000000000 |   rmmovq %rax, (%r10)
+0x095: 60ca                 |   addq %r12, %r10
+0x097: 60d3                 |   addq %r13, %rbx
+0x099: 2030                 |   rrmovq %rbx, %rax
+0x09b: 61c0                 |   subq %r12, %rax
+0x09d: 728000000000000000   |   jl loop
+                            | 
+0x0a6: 90                   |   ret
+                            | 
+                            | #table
+0x0a8:                      | .align 8
+0x0a8:                      | table:
+0x0a8: 5b01000000000000     |   .quad L0
+0x0b0: 5001000000000000     |   .quad LD
+0x0b8: 6601000000000000     |   .quad L2
+0x0c0: 7101000000000000     |   .quad L3
+0x0c8: 5001000000000000     |   .quad LD
+0x0d0: 6601000000000000     |   .quad L2
+                            | 
+                            | # long switchv(long index)
+                            | # index in %rdi
+0x0d8:                      | switchv:
+0x0d8: 30f1a800000000000000 |   irmovq table, %rcx
+0x0e2: 30f00500000000000000 |   irmovq $5, %rax
+0x0ec: 6170                 |   subq %rdi, %rax
+0x0ee: 724301000000000000   |   jl DEF
+0x0f7: 30f00000000000000000 |   irmovq $0, %rax
+0x101: 6107                 |   subq %rax, %rdi
+0x103: 724301000000000000   |   jl DEF
+0x10c: 30f80800000000000000 |   irmovq $8, %r8
+0x116: 30f90100000000000000 |   irmovq $1, %r9
+                            | 
+0x120:                      | MUL:
+0x120: 733601000000000000   |   je ADD
+0x129: 6081                 |   addq %r8, %rcx
+0x12b: 6197                 |   subq %r9, %rdi
+0x12d: 702001000000000000   |   jmp MUL
+                            | 
+0x136:                      | ADD:
+0x136: 50010000000000000000 |   mrmovq (%rcx), %rax
+0x140: a00f                 |   pushq %rax
+0x142: 90                   |   ret
+                            | 
+0x143:                      | DEF:
+0x143: 50010800000000000000 |   mrmovq 8(%rcx), %rax
+0x14d: a00f                 |   pushq %rax
+0x14f: 90                   |   ret
+0x150:                      | LD:
+0x150: 30f0dd0d000000000000 |   irmovq $3549, %rax
+0x15a: 90                   |   ret
+0x15b:                      | L0:
+0x15b: 30f0aa0a000000000000 |   irmovq $2730, %rax
+0x165: 90                   |   ret
+0x166:                      | L2:
+0x166: 30f0bb0b000000000000 |   irmovq $3003, %rax
+0x170: 90                   |   ret
+0x171:                      | L3:
+0x171: 30f0cc0c000000000000 |   irmovq $3276, %rax
+0x17b: 90                   |   ret
+                            | # Stack starts here and grows to lower addresses
+0x200:                      |   .pos  0x200
+0x200:                      | stack:
