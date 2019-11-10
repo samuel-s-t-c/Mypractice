@@ -4,10 +4,10 @@
 #    Copyright (C) Randal E. Bryant, David R. O'Hallaron, 2014     #
 ####################################################################
 
-## Your task is to make the pipeline work without using any forwarding
-## The normal bypassing logic in the file is disabled.
-## You can only change the pipeline control logic at the end of this file.
-## The trick is to make the pipeline stall whenever there is a data hazard.
+## Your task is to implement the iaddq instruction
+## The file contains a declaration of the icodes
+## for iaddq (IIADDQ)
+## Your job is to add the rest of the logic to make it work
 
 ####################################################################
 #    C Include's.  Don't alter these                               #
@@ -38,6 +38,8 @@ wordsig ICALL	'I_CALL'
 wordsig IRET	'I_RET'
 wordsig IPUSHQ	'I_PUSHQ'
 wordsig IPOPQ	'I_POPQ'
+# Instruction code for iaddq instruction
+wordsig IIADDQ	'I_IADDQ'
 
 ##### Symbolic represenations of Y86-64 function codes            #####
 wordsig FNONE    'F_NONE'        # Default function code
@@ -212,15 +214,25 @@ word d_dstM = [
 ];
 
 ## What should be the A value?
-##  DO NOT MODIFY THE FOLLOWING CODE.
-## No forwarding.  valA is either valP or value from register file
+## Forward into decode stage for valA
 word d_valA = [
 	D_icode in { ICALL, IJXX } : D_valP; # Use incremented PC
+	d_srcA == e_dstE : e_valE;    # Forward valE from execute
+	d_srcA == M_dstM : m_valM;    # Forward valM from memory
+	d_srcA == M_dstE : M_valE;    # Forward valE from memory
+	d_srcA == W_dstM : W_valM;    # Forward valM from write back
+	d_srcA == W_dstE : W_valE;    # Forward valE from write back
 	1 : d_rvalA;  # Use value read from register file
 ];
 
-## No forwarding.  valB is value from register file
-word d_valB = d_rvalB;
+word d_valB = [
+	d_srcB == e_dstE : e_valE;    # Forward valE from execute
+	d_srcB == M_dstM : m_valM;    # Forward valM from memory
+	d_srcB == M_dstE : M_valE;    # Forward valE from memory
+	d_srcB == W_dstM : W_valM;    # Forward valM from write back
+	d_srcB == W_dstE : W_valE;    # Forward valE from write back
+	1 : d_rvalB;  # Use value read from register file
+];
 
 ################ Execute Stage #####################################
 
@@ -307,31 +319,27 @@ word Stat = [
 # Should I stall or inject a bubble into Pipeline Register F?
 # At most one of these can be true.
 bool F_bubble = 0;
-bool F_stall = 
-	# Modify the following to stall the update of pipeline register F
-  # !(E_icode == IJXX && !e_Cnd) &&
-	((d_srcA != RNONE && d_srcA in {e_dstE, E_dstM, M_dstE, M_dstM, W_dstE, W_dstM}) ||
-	 (d_srcB != RNONE && d_srcB in {e_dstE, E_dstM, M_dstE, M_dstM, W_dstE, W_dstM}))||
+bool F_stall =
+	# Conditions for a load/use hazard
+	E_icode in { IMRMOVQ, IPOPQ } &&
+	 E_dstM in { d_srcA, d_srcB } ||
 	# Stalling at fetch while ret passes through pipeline
-	(IRET in { D_icode, E_icode, M_icode });
+	IRET in { D_icode, E_icode, M_icode };
 
 # Should I stall or inject a bubble into Pipeline Register D?
 # At most one of these can be true.
 bool D_stall = 
-	# Modify the following to stall the instruction in decode
-	!(E_icode == IJXX && !e_Cnd) &&
-	((d_srcA != RNONE && d_srcA in {e_dstE, E_dstM, M_dstE, M_dstM, W_dstE, W_dstM}) ||
-	 (d_srcB != RNONE && d_srcB in {e_dstE, E_dstM, M_dstE, M_dstM, W_dstE, W_dstM}));
+	# Conditions for a load/use hazard
+	E_icode in { IMRMOVQ, IPOPQ } &&
+	 E_dstM in { d_srcA, d_srcB };
 
 bool D_bubble =
 	# Mispredicted branch
 	(E_icode == IJXX && !e_Cnd) ||
 	# Stalling at fetch while ret passes through pipeline
-	# !(E_icode in { IMRMOVQ, IPOPQ } && E_dstM in { d_srcA, d_srcB }) &&
-	# but not condition for a generate/use hazard
-	!((d_srcA != RNONE && d_srcA in {e_dstE, E_dstM, M_dstE, M_dstM, W_dstE, W_dstM}) ||
-    (d_srcB != RNONE && d_srcB in {e_dstE, E_dstM, M_dstE, M_dstM, W_dstE, W_dstM}))
-  && IRET in { D_icode, E_icode, M_icode };
+	# but not condition for a load/use hazard
+	!(E_icode in { IMRMOVQ, IPOPQ } && E_dstM in { d_srcA, d_srcB }) &&
+	  IRET in { D_icode, E_icode, M_icode };
 
 # Should I stall or inject a bubble into Pipeline Register E?
 # At most one of these can be true.
@@ -339,9 +347,9 @@ bool E_stall = 0;
 bool E_bubble =
 	# Mispredicted branch
 	(E_icode == IJXX && !e_Cnd) ||
-	# Modify the following to inject bubble into the execute stage
-	((d_srcA != RNONE && d_srcA in {e_dstE, E_dstM, M_dstE, M_dstM, W_dstE, W_dstM}) ||
-	 (d_srcB != RNONE && d_srcB in {e_dstE, E_dstM, M_dstE, M_dstM, W_dstE, W_dstM}));
+	# Conditions for a load/use hazard
+	E_icode in { IMRMOVQ, IPOPQ } &&
+	 E_dstM in { d_srcA, d_srcB};
 
 # Should I stall or inject a bubble into Pipeline Register M?
 # At most one of these can be true.
