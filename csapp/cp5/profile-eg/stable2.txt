@@ -1,0 +1,8 @@
+Case		Sort	List	Lower	Strlen	Hash	Rest
+Initial  	130.59	4.59	0.22	0	0.01	0.13
+Quicksort	0.03	4.52	0.21	0	0.01	0.12
+Iter First	0.03	7.90	0.33	0	0.04	0.09
+Iter Last	0.04	5.07	0.26	0	0.03	0.06
+Big Table	0.03	5.68	0.24	0	0.04	0.09
+Better Hash	0.02	0.04	0.22	0	0.02	0.06
+Linear Lower	0.02	0.03	0.02	0	0.02	0.09
