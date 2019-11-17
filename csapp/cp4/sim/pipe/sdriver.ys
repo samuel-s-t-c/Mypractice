@@ -29,23 +29,134 @@ ncopy:
 ##################################################################
 # You can modify this portion
 	# Loop header
-	xorq %rax,%rax		# count = 0;
-	andq %rdx,%rdx		# len <= 0?
-	jle Done		# if so, goto Done:
-
-Loop:	mrmovq (%rdi), %r10	# read val from src...
+	iaddq $-7,%rdx		# len > 7?
+  jg Loop
+  jmp test1
+  
+Loop:
+  mrmovq (%rdi), %r10	# read val from src...
 	rmmovq %r10, (%rsi)	# ...and store it to dst
 	andq %r10, %r10		# val <= 0?
-	jle Npos		# if so, goto Npos:
-	irmovq $1, %r10
-	addq %r10, %rax		# count++
-Npos:	irmovq $1, %r10
-	subq %r10, %rdx		# len--
-	irmovq $8, %r10
-	addq %r10, %rdi		# src++
-	addq %r10, %rsi		# dst++
-	andq %rdx,%rdx		# len > 0?
+	jle Npos0		# if so, goto Npos0:
+	iaddq $1, %rax		# count++
+Npos0:
+  mrmovq 8(%rdi), %r10	# read val from src...
+	rmmovq %r10, 8(%rsi)	# ...and store it to dst
+	andq %r10, %r10		# val <= 0?
+	jle Npos1		# if so, goto Npos1:
+	iaddq $1, %rax		# count++
+Npos1:
+  mrmovq 16(%rdi), %r10	# read val from src...
+	rmmovq %r10, 16(%rsi)	# ...and store it to dst
+	andq %r10, %r10		# val <= 0?
+	jle Npos2		# if so, goto Npos2:
+	iaddq $1, %rax		# count++
+Npos2:
+  mrmovq 24(%rdi), %r10	# read val from src...
+	rmmovq %r10, 24(%rsi)	# ...and store it to dst
+	andq %r10, %r10		# val <= 0?
+	jle Npos3		# if so, goto Npos3:
+	iaddq $1, %rax		# count++
+Npos3:
+  mrmovq 32(%rdi), %r10	# read val from src...
+	rmmovq %r10, 32(%rsi)	# ...and store it to dst
+	andq %r10, %r10		# val <= 0?
+	jle Npos4		# if so, goto Npos3:
+	iaddq $1, %rax		# count++
+Npos4:
+  mrmovq 40(%rdi), %r10	# read val from src...
+	rmmovq %r10, 40(%rsi)	# ...and store it to dst
+	andq %r10, %r10		# val <= 0?
+	jle Npos5		# if so, goto Npos3:
+	iaddq $1, %rax		# count++
+Npos5:
+  mrmovq 48(%rdi), %r10	# read val from src...
+	rmmovq %r10, 48(%rsi)	# ...and store it to dst
+	andq %r10, %r10		# val <= 0?
+	jle Npos6		# if so, goto Npos3:
+	iaddq $1, %rax		# count++
+Npos6:
+  mrmovq 56(%rdi), %r10	# read val from src...
+	rmmovq %r10, 56(%rsi)	# ...and store it to dst
+	andq %r10, %r10		# val <= 0?
+	jle Npos7		# if so, goto Npos3:
+	iaddq $1, %rax		# count++
+Npos7:
+	iaddq $-1, %rdx		# len--
+	iaddq $64, %rdi		# src++
+	iaddq $64, %rsi		# dst++
+	iaddq $-7,%rdx		# len > 3?
 	jg Loop			# if so, goto Loop:
+  .align 8
+test1:
+  iaddq $3, %rdx
+  jl T1
+  jge T2
+T1:
+  iaddq $2, %rdx
+  jl L1
+  jge L2
+L1:
+  iaddq $1, %rdx
+  je P6
+  jmp Done
+L2:
+  iaddq $-1, %rdx
+  je P4
+  jmp P5
+T2:
+  iaddq $-2, %rdx
+  jl L3
+  jge L4
+L3:
+  iaddq $1, %rdx
+  je P2
+  jmp P3
+L4:
+  iaddq $-1, %rdx
+  jl P1
+P0:
+  mrmovq 48(%rdi), %r10	# read val from src...
+	rmmovq %r10, 48(%rsi)	# ...and store it to dst
+	andq %r10, %r10		# val <= 0?
+	jle P1		# if so, goto Npos:
+	iaddq $1, %rax		# count++
+P1:
+  mrmovq 40(%rdi), %r10	# read val from src...
+	rmmovq %r10, 40(%rsi)	# ...and store it to dst
+	andq %r10, %r10		# val <= 0?
+	jle P2		# if so, goto Npos:
+	iaddq $1, %rax		# count++
+P2:
+  mrmovq 32(%rdi), %r10	# read val from src...
+	rmmovq %r10, 32(%rsi)	# ...and store it to dst
+	andq %r10, %r10		# val <= 0?
+	jle P3		# if so, goto Npos:
+	iaddq $1, %rax		# count++
+P3:
+  mrmovq 24(%rdi), %r10	# read val from src...
+	rmmovq %r10, 24(%rsi)	# ...and store it to dst
+	andq %r10, %r10		# val <= 0?
+	jle P4		# if so, goto Npos:
+	iaddq $1, %rax		# count++
+P4:
+  mrmovq 16(%rdi), %r10	# read val from src...
+	rmmovq %r10, 16(%rsi)	# ...and store it to dst
+	andq %r10, %r10		# val <= 0?
+	jle P5		# if so, goto Npos:
+	iaddq $1, %rax		# count++
+P5:
+  mrmovq 8(%rdi), %r10	# read val from src...
+	rmmovq %r10, 8(%rsi)	# ...and store it to dst
+	andq %r10, %r10		# val <= 0?
+	jle P6		# if so, goto Npos:
+	iaddq $1, %rax		# count++
+P6:
+  mrmovq (%rdi), %r10	# read val from src...
+	rmmovq %r10, (%rsi)	# ...and store it to dst
+	andq %r10, %r10		# val <= 0?
+	jle Done		# if so, goto Npos:
+	iaddq $1, %rax		# count++
 ##################################################################
 # Do not modify the following section of code
 # Function epilogue.
@@ -62,10 +173,10 @@ EndFun:
 ###############################
 	.align 8
 src:
-	.quad -1
+	.quad 1
 	.quad 2
 	.quad -3
-	.quad 4
+	.quad -4
 	.quad 0xbcdefa # This shouldn't get moved
 
 	.align 16
