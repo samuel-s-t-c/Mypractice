@@ -10,10 +10,10 @@
  * Please fill in the following team struct 
  */
 team_t team = {
-    "bovik",              /* Team name */
+    "water",              /* Team name */
 
-    "Harry Q. Bovik",     /* First member full name */
-    "bovik@nowhere.edu",  /* First member email address */
+    "Samuel St. C",     /* First member full name */
+    "fake@fake.com",  /* First member email address */
 
     "",                   /* Second member full name (leave blank if none) */
     ""                    /* Second member email addr (leave blank if none) */
@@ -36,20 +36,212 @@ void naive_rotate(int dim, pixel *src, pixel *dst)
     int i, j;
 
     for (i = 0; i < dim; i++)
-	for (j = 0; j < dim; j++)
-	    dst[RIDX(dim-1-j, i, dim)] = src[RIDX(i, j, dim)];
+      for (j = 0; j < dim; j++)
+        dst[RIDX(dim-1-j, i, dim)] = src[RIDX(i, j, dim)];
 }
 
 /* 
  * rotate - Your current working version of rotate
  * IMPORTANT: This is the version you will be graded on
  */
-char rotate_descr[] = "rotate: Current working version";
+#define BLOCK 32
+char rotate_descr[] = "rotate: blocking by 4";
 void rotate(int dim, pixel *src, pixel *dst) 
 {
-    naive_rotate(dim, src, dst);
-}
+  int i, j, a, b;
 
+  for (i = 0; i < dim-BLOCK+1; i+=BLOCK)
+    for (j = 0; j < dim-BLOCK+1; j+=BLOCK)
+      for (a = i; a < i+BLOCK; a++)
+        for (b = j; b < j+BLOCK; b++)
+          dst[RIDX(dim-1-b, a, dim)] = src[RIDX(a, b, dim)];
+
+  int offset = i;
+  for (;i < dim; i++)
+    for (j = 0; j < offset; j+=BLOCK)
+      for (b = j; b < j+BLOCK; b++)
+        dst[RIDX(dim-1-b, i, dim)] = src[RIDX(i, b, dim)];
+
+  for (i = 0; i < dim; i++)
+    for (j = offset; j < dim; j++)
+      dst[RIDX(dim-1-j, i, dim)] = src[RIDX(i, j, dim)];
+}
+char rotate_descr2[] = "rotate:mixed;Currentworking version,using pointer rather than computing address";
+void rotate2(int dim, pixel *src, pixel*dst)
+{
+    int i;
+    int j;
+    int tmp1=dim*dim;
+    int tmp2=dim *31;
+    int tmp3=tmp1-dim;
+    int tmp4=tmp1+32;
+    int tmp5=dim+31;
+    dst+=tmp3;
+
+   for(i=0; i< dim; i+=32)
+   {
+        for(j=0;j<dim;j++)
+      {       
+         *dst=*src;
+         dst++;src+=dim;
+         *dst=*src;
+         dst++;src+=dim;
+         *dst=*src;
+         dst++;src+=dim;
+         *dst=*src;
+         dst++;src+=dim;
+         *dst=*src;
+         dst++;src+=dim;
+         *dst=*src;
+         dst++;src+=dim;
+         *dst=*src;
+         dst++;src+=dim;
+         *dst=*src;
+         dst++;src+=dim;
+         *dst=*src;
+         dst++;src+=dim;
+         *dst=*src;
+         dst++;src+=dim;
+         *dst=*src;
+         dst++;src+=dim;
+         *dst=*src;
+         dst++;src+=dim;
+         *dst=*src;
+         dst++;src+=dim;
+         *dst=*src;
+         dst++;src+=dim;
+         *dst=*src;
+         dst++;src+=dim;
+         *dst=*src;
+         dst++;src+=dim;  
+         *dst=*src;
+         dst++;src+=dim;
+         *dst=*src;
+         dst++;src+=dim;
+         *dst=*src;
+         dst++;src+=dim;
+         *dst=*src;
+         dst++;src+=dim;
+         *dst=*src;
+         dst++;src+=dim;
+         *dst=*src;
+         dst++;src+=dim;
+         *dst=*src;
+         dst++;src+=dim;
+         *dst=*src;
+         dst++;src+=dim;
+         *dst=*src;
+         dst++;src+=dim;
+         *dst=*src;
+         dst++;src+=dim;
+         *dst=*src;
+         dst++;src+=dim;
+         *dst=*src;
+         dst++;src+=dim;
+         *dst=*src;
+         dst++;src+=dim;
+         *dst=*src;
+         dst++;src+=dim;
+         *dst=*src;
+         dst++;src+=dim;
+         *dst=*src;        
+         
+         src++;
+         src-=tmp2;
+         dst-=tmp5;
+      }
+      src+=tmp2;
+      dst+=tmp4;
+   }
+}
+char rotate_descr1[] = "rotate: unrolling;Currentworking version,using pointer rather than computing address";
+void rotate1(int dim, pixel *src, pixel*dst)
+{
+    int i;
+    int j;
+    int tmp1=dim*dim;
+    int tmp2=dim *31;
+    int tmp3=tmp1-dim;
+    int tmp4=tmp1+32;
+    int tmp5=dim+31;
+    dst+=tmp3;
+
+   for(i=0; i< dim; i+=32)
+   {
+        for(j=0;j<dim;j++)
+      {       
+         *dst=*src;
+         dst++;src+=dim;
+         *dst=*src;
+         dst++;src+=dim;
+         *dst=*src;
+         dst++;src+=dim;
+         *dst=*src;
+         dst++;src+=dim;
+         *dst=*src;
+         dst++;src+=dim;
+         *dst=*src;
+         dst++;src+=dim;
+         *dst=*src;
+         dst++;src+=dim;
+         *dst=*src;
+         dst++;src+=dim;
+         *dst=*src;
+         dst++;src+=dim;
+         *dst=*src;
+         dst++;src+=dim;
+         *dst=*src;
+         dst++;src+=dim;
+         *dst=*src;
+         dst++;src+=dim;
+         *dst=*src;
+         dst++;src+=dim;
+         *dst=*src;
+         dst++;src+=dim;
+         *dst=*src;
+         dst++;src+=dim;
+         *dst=*src;
+         dst++;src+=dim;  
+         *dst=*src;
+         dst++;src+=dim;
+         *dst=*src;
+         dst++;src+=dim;
+         *dst=*src;
+         dst++;src+=dim;
+         *dst=*src;
+         dst++;src+=dim;
+         *dst=*src;
+         dst++;src+=dim;
+         *dst=*src;
+         dst++;src+=dim;
+         *dst=*src;
+         dst++;src+=dim;
+         *dst=*src;
+         dst++;src+=dim;
+         *dst=*src;
+         dst++;src+=dim;
+         *dst=*src;
+         dst++;src+=dim;
+         *dst=*src;
+         dst++;src+=dim;
+         *dst=*src;
+         dst++;src+=dim;
+         *dst=*src;
+         dst++;src+=dim;
+         *dst=*src;
+         dst++;src+=dim;
+         *dst=*src;
+         dst++;src+=dim;
+         *dst=*src;        
+         
+         src++;
+         src-=tmp2;
+         dst-=tmp5;
+      }
+      src+=tmp2;
+      dst+=tmp4;
+   }
+}
 /*********************************************************************
  * register_rotate_functions - Register all of your different versions
  *     of the rotate kernel with the driver by calling the
@@ -62,6 +254,8 @@ void register_rotate_functions()
 {
     add_rotate_function(&naive_rotate, naive_rotate_descr);   
     add_rotate_function(&rotate, rotate_descr);   
+    add_rotate_function(&rotate1, rotate_descr1);   
+    add_rotate_function(&rotate2, rotate_descr2);   
     /* ... Register additional test functions here */
 }
 
