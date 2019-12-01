@@ -14,7 +14,7 @@ void unix_error(char *err)
   _exit(0);
 }
 
-void mmapcopy(int fd, int size)
+void mmapcopy(int fd, size_t size)
 {
   char *bufp;
 
