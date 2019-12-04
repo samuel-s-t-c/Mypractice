@@ -18,11 +18,13 @@ void unix_error(char *err)
 int main(int argc, char **argv)
 {
   struct stat stat;
-  if (argc != 2)
+  if (argc != 2) {
     printf("usage: %s <File>\n", argv[0]);
+    exit(0);
+  }
 
   int fd;
-  if ((fd = open(argv[1], O_RDONLY, 0) < 0))
+  if ((fd = open(argv[1], O_RDWR, 0)) < 0)
     unix_error("open error");
 
   fstat(fd, &stat);
@@ -30,15 +32,23 @@ int main(int argc, char **argv)
   char *bufp;
   size_t size = stat.st_size;
 
-  bufp = mmap(NULL, size, PROT_READ, MAP_PRIVATE, fd, 0);
+  bufp = mmap(NULL, size, PROT_WRITE|PROT_READ, MAP_PRIVATE, fd, 0);
   if (bufp == MAP_FAILED)
     unix_error("mmap error");
 
-  /* bufp[0] = 'J'; */
+  if (close(fd) < 0)
+    unix_error("close error");
 
-  if ((write(1, bufp, stat.st_size)) < 0)
+  if ((write(1, bufp, size)) < 0)
     unix_error("write error");
 
-  munmap(bufp, size);
+  bufp[0] = 'J';
+
+  if ((write(1, bufp, size)) < 0)
+    unix_error("write error");
+
+  if ((munmap(bufp, size)) < 0)
+    unix_error("munmap error");
+
   exit(0);
 }

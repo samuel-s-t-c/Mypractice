@@ -55,7 +55,7 @@ static void *extend_heap(size_t words);
 static void place(void *bp, size_t asize);
 static void *find_fit(size_t asize);
 static void *coalesce(void *bp);
-static void printblock(void *bp); 
+static void printblock(void *bp);
 static void checkheap(int verbose);
 static void checkblock(void *bp);
 
