@@ -1,0 +1,6 @@
+
+if (Fork() == 0) {
+   int fd = Open("foo.txt", O_RDONLY, 0);
+   Dup2(fd, 0);
+   Execve("fstatcheck", argv, envp);
+}
