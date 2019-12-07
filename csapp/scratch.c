@@ -2,19 +2,21 @@
 
 int main(int argc, char **argv)
 {
-  DIR *streamp;
-  struct  dirent *dep;
+  char buf[MAXBUF] = "Hello, world! My name is hp.";
+  char buf1[MAXBUF];
+  FILE *f = Fopen(argv[1], "w+");
+  FILE *r = Fopen(argv[1], "r+");
+  fprintf(f, "%s", buf);
+  fflush(f);
+  fseek(f, 0, SEEK_SET);
+  fscanf(f, "%28c", buf1);
+  fprintf(stdout, "1: %s\n", buf1);
 
-  streamp = Opendir(argv[1]);
+  fseek(f, 0, SEEK_SET);
+  fscanf(f, "%s", buf1);
+  fprintf(f, "%s", buf1);
+  fscanf(r, "%40c", buf1);
+  fprintf(stdout, "2: %s\n", buf1);
 
-  errno = 0;
-  while ((dep = readdir(streamp)) != NULL) {
-    printf("Found file: %s\n", dep->d_name);
-  }
-
-  if (errno != 0)
-    unix_error("readdir error");
-
-  Closedir(streamp);
-  exit(0);
+  return 0;
 }
