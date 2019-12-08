@@ -35,28 +35,12 @@ int main(int argc, char **argv)
     Getnameinfo((SA *) &clientaddr, clientlen, hostname, MAXLINE, 
                 port, MAXLINE, 0);
     printf("Accepted connection from (%s, %s)\n", hostname, port);
-    /* doit(connfd);                                             //line:netp:tiny:doit */
-    echo(connfd);
+    doit(connfd);                                             //line:netp:tiny:doit
     Close(connfd);                                            //line:netp:tiny:close
     fflush(stdout);
   }
 }
 /* $end tinymain */
-
-void echo(int fd)
-{
-  rio_t rio;
-  char buf[MAXLINE];
-  size_t n;
-  Rio_readinitb(&rio, fd);
-  sprintf(buf, "HTTP/1.0 200 OK\r\n\r\n");    //line:netp:servestatic:beginserve
-  Rio_writen(fd, buf, strlen(buf));
-  while ((n = Rio_readlineb(&rio, buf, MAXLINE)) != 0) {
-    if (strcmp(buf, "\r\n") == 0)
-      break;
-    Rio_writen(fd, buf, n);
-  }
-}
 
 /*
  * doit - handle one HTTP request/response transaction
