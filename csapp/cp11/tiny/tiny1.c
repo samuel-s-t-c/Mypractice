@@ -14,6 +14,8 @@ void serve_dynamic(int fd, char *filename, char *cgiargs);
 void clienterror(int fd, char *cause, char *errnum, 
                  char *shortmsg, char *longmsg);
 void echo(int fd);
+void sigchild_handler(int sig);
+volatile sig_atomic_t pid;
 
 int main(int argc, char **argv) 
 {
@@ -27,6 +29,8 @@ int main(int argc, char **argv)
     fprintf(stderr, "usage: %s <port>\n", argv[0]);
     exit(1);
   }
+
+  Signal(SIGCHLD, sigchild_handler);
 
   listenfd = Open_listenfd(argv[1]);
   while (1) {
@@ -168,6 +172,7 @@ void serve_static(int fd, char *filename, int filesize)
 {
   int srcfd;
   char *srcp, filetype[MAXLINE], buf[MAXBUF];
+  /* struct stat stat; */
  
   /* Send response headers to client */
   get_filetype(filename, filetype);       //line:netp:servestatic:getfiletype
@@ -182,10 +187,14 @@ void serve_static(int fd, char *filename, int filesize)
 
   /* Send response body to client */
   srcfd = Open(filename, O_RDONLY, 0);    //line:netp:servestatic:open
-  srcp = Mmap(0, filesize, PROT_READ, MAP_PRIVATE, srcfd, 0);//line:netp:servestatic:mmap
-  Close(srcfd);                           //line:netp:servestatic:close
+  /* Fstat(srcfd, &stat); */
+  srcp = Malloc(filesize);
+  Rio_readn(srcfd, srcp, filesize);
+  /* srcp = Mmap(0, filesize, PROT_READ, MAP_PRIVATE, srcfd, 0);//line:netp:servestatic:mmap */
   Rio_writen(fd, srcp, filesize);         //line:netp:servestatic:write
-  Munmap(srcp, filesize);                 //line:netp:servestatic:munmap
+  Free(srcp);
+  Close(srcfd);                           //line:netp:servestatic:close
+  /* Munmap(srcp, filesize);                 //line:netp:servestatic:munmap */
 }
 
 /*
@@ -208,6 +217,14 @@ void get_filetype(char *filename, char *filetype)
 }  
 /* $end serve_static */
 
+void sigchild_handler(int sig)
+{
+  sio_puts("processing the SIGCHILD signal\n");
+  int oldErrno = errno;
+  pid = waitpid(-1, NULL, 0);
+  errno = oldErrno;
+  sio_puts("finished\n");
+}
 /*
  * serve_dynamic - run a CGI program on behalf of the client
  */
@@ -215,6 +232,7 @@ void get_filetype(char *filename, char *filetype)
 void serve_dynamic(int fd, char *filename, char *cgiargs) 
 {
   char buf[MAXLINE], *emptylist[] = { NULL };
+  sigset_t mask, prev;
 
   /* Return first part of HTTP response */
   sprintf(buf, "HTTP/1.0 200 OK\r\n"); 
@@ -222,15 +240,27 @@ void serve_dynamic(int fd, char *filename, char *cgiargs)
   sprintf(buf, "Server: Tiny Web Server\r\n");
   Rio_writen(fd, buf, strlen(buf));
 
+  Sigemptyset(&mask);
+  Sigaddset(&mask, SIGCHLD);
+
+  Sigprocmask(SIG_BLOCK, &mask, &prev);
   if (Fork() == 0) { /* Child */ //line:netp:servedynamic:fork
     /* Real server would set all CGI vars here */
+    Sigprocmask(SIG_SETMASK, &prev, NULL);
     setenv("QUERY_STRING", cgiargs, 1); //line:netp:servedynamic:setenv
     Dup2(fd, STDOUT_FILENO);         /* Redirect stdout to client */ //line:netp:servedynamic:dup2
     Execve(filename, emptylist, environ); /* Run CGI program */ //line:netp:servedynamic:execve
   }
-  Wait(NULL); /* Parent waits for and reaps child */ //line:netp:servedynamic:wait
+
+  pid = 0;
+  while (!pid)
+    sigsuspend(&prev);
+
+  Sigprocmask(SIG_SETMASK, &prev, NULL);
+  /* Wait(NULL); /\* Parent waits for and reaps child *\/ //line:netp:servedynamic:wait */
 }
 /* $end serve_dynamic */
+
 
 /*
  * clienterror - returns an error message to the client
