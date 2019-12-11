@@ -1,4 +1,7 @@
-#include "csapp.h"
+#include "../csapp.h"
+#include "../sbuf.h"
+
+sbuf_t buf;
 
 int main(int argc, char **argv)
 {
@@ -9,6 +12,9 @@ int main(int argc, char **argv)
     exit(0);
   }
 
-  listenfd = Open_listenfd(argv[1]);
+  sbuf_init(&buf, -1);
 
+  listenfd = Open_listenfd(argv[1]);
+  while (1) {
+  }
 }
