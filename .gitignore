@@ -1,3 +1,4 @@
+## Java
 # Compiled class file
 *.class
 
@@ -22,5 +23,9 @@
 # virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
 hs_err_pid*
 
+# algs4: data set for test
 algs4/algs4-data
 algs4/out/
+
+## C++
+
