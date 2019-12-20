@@ -1,3 +1,5 @@
 #!/bin/bash
 
-echo $-
+str='http://blog.seetiny.com';
+pattern='/^/';
+echo $str;
