@@ -21,6 +21,7 @@
     <property name="project.structure.last.edited" value="SDKs" />
     <property name="project.structure.proportion" value="0.246" />
     <property name="project.structure.side.proportion" value="0.28249338" />
+    <property name="settings.editor.selected.configurable" value="preferences.lookFeel" />
   </component>
   <component name="RunDashboard">
     <option name="ruleStates">
@@ -34,10 +35,15 @@
       </list>
     </option>
   </component>
-  <component name="RunManager">
+  <component name="RunManager" selected="Application.FixedStack">
     <configuration name="&lt;template&gt;" type="TestNG" default="true" selected="false">
       <option name="VM_PARAMETERS" value="-ea" />
       <option name="WORKING_DIRECTORY" value="%MODULE_WORKING_DIR%" />
+    </configuration>
+    <configuration name="FixedStack" type="Application" factoryName="Application">
+      <option name="MAIN_CLASS_NAME" value="FixedStack" />
+      <module name="algs4" />
+      <method v="2" />
     </configuration>
     <configuration name="Main" type="Application" factoryName="Application" temporary="true">
       <option name="MAIN_CLASS_NAME" value="Main" />
@@ -50,11 +56,15 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <configuration name="RegExp" type="Application" factoryName="Application">
+      <option name="MAIN_CLASS_NAME" value="RegExp" />
+      <module name="algs4" />
+      <option name="PROGRAM_PARAMETERS" value="2000" />
+      <method v="2" />
+    </configuration>
     <configuration default="true" type="Application" factoryName="Application">
       <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
+      <method v="2" />
     </configuration>
     <configuration default="true" type="JUnit" factoryName="JUnit">
       <option name="TEST_OBJECT" value="class" />
