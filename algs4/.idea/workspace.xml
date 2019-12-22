@@ -35,13 +35,24 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Application.FixedStack">
+  <component name="RunManager" selected="Application.LinkedQueue">
     <configuration name="&lt;template&gt;" type="TestNG" default="true" selected="false">
       <option name="VM_PARAMETERS" value="-ea" />
       <option name="WORKING_DIRECTORY" value="%MODULE_WORKING_DIR%" />
     </configuration>
     <configuration name="FixedStack" type="Application" factoryName="Application">
       <option name="MAIN_CLASS_NAME" value="FixedStack" />
+      <module name="algs4" />
+      <method v="2" />
+    </configuration>
+    <configuration name="LinkedListStack" type="Application" factoryName="Application">
+      <option name="MAIN_CLASS_NAME" value="LinkedStack" />
+      <module name="algs4" />
+      <option name="PROGRAM_PARAMETERS" value="&lt;  ~/mypractice/algs4/tobe.txt" />
+      <method v="2" />
+    </configuration>
+    <configuration name="LinkedQueue" type="Application" factoryName="Application">
+      <option name="MAIN_CLASS_NAME" value="LinkedQueue" />
       <module name="algs4" />
       <method v="2" />
     </configuration>
@@ -56,10 +67,20 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <configuration name="MyQueue" type="Application" factoryName="Application">
+      <option name="MAIN_CLASS_NAME" value="ResizingArrayQueue" />
+      <module name="algs4" />
+      <method v="2" />
+    </configuration>
     <configuration name="RegExp" type="Application" factoryName="Application">
       <option name="MAIN_CLASS_NAME" value="RegExp" />
       <module name="algs4" />
       <option name="PROGRAM_PARAMETERS" value="2000" />
+      <method v="2" />
+    </configuration>
+    <configuration name="ResizingArrayStack" type="Application" factoryName="Application">
+      <option name="MAIN_CLASS_NAME" value="ResizingArrayStack" />
+      <module name="algs4" />
       <method v="2" />
     </configuration>
     <configuration default="true" type="Application" factoryName="Application">
