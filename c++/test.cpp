@@ -1,6 +1,7 @@
 #include <iostream>
 
-int main()
+int main(int argc, char** args)
 {
-  std::cout << "hello, world!\n";
+  for (int i = 0 ; i < argc; i++)
+    std::cout << args[i] ;
 }
