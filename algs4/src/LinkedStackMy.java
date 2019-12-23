@@ -4,10 +4,11 @@ import edu.princeton.cs.algs4.StdOut;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
-public class LinkedStack<Item> implements Iterable<Item> {
+public class LinkedStackMy<Item> implements Iterable<Item> {
     public static void main(String[] args)
     {
-        LinkedStack<String> stack = new LinkedStack<String>();
+        LinkedStackMy<String>[] a = (LinkedStackMy<String>[]) new LinkedStackMy[12];
+        LinkedStackMy<String> stack = new LinkedStackMy<String>();
         while (!StdIn.isEmpty()) {
             String item = StdIn.readString();
             if (!item.equals("-"))
@@ -26,8 +27,13 @@ public class LinkedStack<Item> implements Iterable<Item> {
 
     private class Node
     {
-        Item item;
-        Node next;
+        private Item item;
+        private Node next;
+    }
+
+    public LinkedStackMy() {
+        first = null;
+        N = 0;
     }
 
     public void push(Item item)
@@ -42,13 +48,16 @@ public class LinkedStack<Item> implements Iterable<Item> {
     public Item pop()
     {
         if (isEmpty())
-            throw new NoSuchElementException();
+            throw new NoSuchElementException("Stack underflow");
         Item ret = first.item;
         first = first.next;
         N--;
         return ret;
     }
-
+    public Item peek() {
+        if (isEmpty()) throw new NoSuchElementException("Stack underflow");
+        return first.item;
+    }
     public boolean isEmpty()
     {
         return N == 0;
@@ -76,7 +85,7 @@ public class LinkedStack<Item> implements Iterable<Item> {
 
         @Override
         public Item next() {
-            if (i == null)
+            if (!hasNext())
                 throw new NoSuchElementException();
             Item ret = i.item;
             i = i.next;
@@ -88,5 +97,14 @@ public class LinkedStack<Item> implements Iterable<Item> {
     public Iterator<Item> iterator()
     {
         return new ReverseIterator();
+    }
+    @Override
+    public String toString()
+    {
+        StringBuilder s = new StringBuilder();
+        for (Item item : this) {
+            s.append(item).append(" ");
+        }
+        return s.toString();
     }
 }

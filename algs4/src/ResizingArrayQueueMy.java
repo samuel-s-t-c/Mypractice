@@ -3,7 +3,7 @@ import edu.princeton.cs.algs4.StdOut;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
-public class ResizingArrayQueue<Item> implements Iterable<Item> {
+public class ResizingArrayQueueMy<Item> implements Iterable<Item> {
     private Item[] items = (Item[]) new Object[2];
     private int head = 0;
     private int tail = 0;
@@ -92,7 +92,7 @@ public class ResizingArrayQueue<Item> implements Iterable<Item> {
     }
     public static void main(String[] args)
     {
-        ResizingArrayQueue<Integer> test = new ResizingArrayQueue<Integer>();
+        ResizingArrayQueueMy<Integer> test = new ResizingArrayQueueMy<Integer>();
         if (test.isEmpty())
             for (int i = 0; i < 10; i++)
             {

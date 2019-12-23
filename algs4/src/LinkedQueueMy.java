@@ -3,17 +3,20 @@ import edu.princeton.cs.algs4.StdOut;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
-public class LinkedQueue<Item> implements Iterable<Item> {
+public class LinkedQueueMy<Item> implements Iterable<Item> {
     public static void main(String[] args) {
-        LinkedQueue<Integer> test = new LinkedQueue<Integer>();
+        LinkedQueueMy<Integer> test = new LinkedQueueMy<Integer>();
         if (test.isEmpty())
             for (int i = 0; i < 10; i++) {
                 test.enqueue(i);
             }
+        test.debug();
+        StdOut.println();
         int size = test.size();
         for (int i = 0; i < size; i++) {
-            test.dequeue();
+            StdOut.print(test.dequeue()+" ");
         }
+        StdOut.println();
         for (int i = 0; i < 12; i++) {
             test.enqueue(i);
             test.enqueue(i);
@@ -64,14 +67,19 @@ public class LinkedQueue<Item> implements Iterable<Item> {
         Node next;
     }
     private Node first;
+    private Node last;
     private int N;
 
     public void enqueue(Item item)
     {
-        Node oldfirst = first;
-        first = new Node();
-        first.item = item;
-        first.next = oldfirst;
+        Node prev = last;
+        last = new Node();
+        last.item = item;
+        last.next = null;
+        if (isEmpty())
+            first = last;
+        else
+            prev.next = last;
         N++;
     }
 
@@ -81,6 +89,7 @@ public class LinkedQueue<Item> implements Iterable<Item> {
             throw new NoSuchElementException();
         Item ret = first.item;
         first = first.next;
+        if (isEmpty()) last = null;
         N--;
         return ret;
     }

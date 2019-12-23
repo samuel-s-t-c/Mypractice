@@ -35,10 +35,15 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Application.LinkedQueue">
+  <component name="RunManager" selected="Application.DoublingTest">
     <configuration name="&lt;template&gt;" type="TestNG" default="true" selected="false">
       <option name="VM_PARAMETERS" value="-ea" />
       <option name="WORKING_DIRECTORY" value="%MODULE_WORKING_DIR%" />
+    </configuration>
+    <configuration name="DoublingTest" type="Application" factoryName="Application">
+      <option name="MAIN_CLASS_NAME" value="DoublingTest" />
+      <module name="algs4" />
+      <method v="2" />
     </configuration>
     <configuration name="FixedStack" type="Application" factoryName="Application">
       <option name="MAIN_CLASS_NAME" value="FixedStack" />
@@ -46,20 +51,19 @@
       <method v="2" />
     </configuration>
     <configuration name="LinkedListStack" type="Application" factoryName="Application">
-      <option name="MAIN_CLASS_NAME" value="LinkedStack" />
+      <option name="MAIN_CLASS_NAME" value="LinkedStackMy" />
       <module name="algs4" />
       <option name="PROGRAM_PARAMETERS" value="&lt;  ~/mypractice/algs4/tobe.txt" />
       <method v="2" />
     </configuration>
     <configuration name="LinkedQueue" type="Application" factoryName="Application">
-      <option name="MAIN_CLASS_NAME" value="LinkedQueue" />
+      <option name="MAIN_CLASS_NAME" value="LinkedQueueMy" />
       <module name="algs4" />
       <method v="2" />
     </configuration>
     <configuration name="Main" type="Application" factoryName="Application" temporary="true">
-      <option name="MAIN_CLASS_NAME" value="Main" />
+      <option name="MAIN_CLASS_NAME" value="Parenthesis" />
       <module name="algs4" />
-      <option name="PROGRAM_PARAMETERS" value="0.2 0.3 0.2 0.3 1000" />
       <option name="WORKING_DIRECTORY" value="file://$PROJECT_DIR$" />
       <RunnerSettings RunnerId="Run" />
       <ConfigurationWrapper RunnerId="Run" />
@@ -68,7 +72,7 @@
       </method>
     </configuration>
     <configuration name="MyQueue" type="Application" factoryName="Application">
-      <option name="MAIN_CLASS_NAME" value="ResizingArrayQueue" />
+      <option name="MAIN_CLASS_NAME" value="ResizingArrayQueueMy" />
       <module name="algs4" />
       <method v="2" />
     </configuration>
@@ -79,7 +83,18 @@
       <method v="2" />
     </configuration>
     <configuration name="ResizingArrayStack" type="Application" factoryName="Application">
-      <option name="MAIN_CLASS_NAME" value="ResizingArrayStack" />
+      <option name="MAIN_CLASS_NAME" value="ResizingArrayStackMy" />
+      <module name="algs4" />
+      <method v="2" />
+    </configuration>
+    <configuration name="StopwatchMy" type="Application" factoryName="Application">
+      <option name="MAIN_CLASS_NAME" value="StopwatchMy" />
+      <module name="algs4" />
+      <option name="PROGRAM_PARAMETERS" value="3000" />
+      <method v="2" />
+    </configuration>
+    <configuration name="Test" type="Application" factoryName="Application">
+      <option name="MAIN_CLASS_NAME" value="Test" />
       <module name="algs4" />
       <method v="2" />
     </configuration>

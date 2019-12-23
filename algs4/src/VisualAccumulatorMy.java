@@ -1,9 +1,9 @@
 import edu.princeton.cs.algs4.StdDraw;
 
-public class VisualAccumulator {
+public class VisualAccumulatorMy {
     private double total;
     private int N;
-    public VisualAccumulator(int trials, double max)
+    public VisualAccumulatorMy(int trials, double max)
     {
         StdDraw.setXscale(0, trials);
         StdDraw.setYscale(0, max);

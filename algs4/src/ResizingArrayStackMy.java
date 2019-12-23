@@ -2,7 +2,7 @@
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
-public class ResizingArrayStack<Item> implements Iterable<Item>
+public class ResizingArrayStackMy<Item> implements Iterable<Item>
 {
     private Item[] items = (Item[]) new Object[1];
     private int N = 0;
@@ -51,7 +51,7 @@ public class ResizingArrayStack<Item> implements Iterable<Item>
 
     public static void main(String[] args)
     {
-        ResizingArrayStack<String> a = new ResizingArrayStack<String>();
+        ResizingArrayStackMy<String> a = new ResizingArrayStackMy<String>();
         System.out.println("size:"+a.size()+" capacity:"+a.capacity());
         for (int i = 0; i < 10; i++)
         {
