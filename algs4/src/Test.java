@@ -10,6 +10,7 @@ public class Test {
         while ((n = arr[0]) != p)
             p = n;
     }
+
     public static int fib(int n) {
         if (n < 2)
             return n;

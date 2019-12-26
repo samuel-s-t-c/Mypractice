@@ -35,7 +35,7 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Application.Test">
+  <component name="RunManager" selected="Application.Percolation">
     <configuration name="&lt;template&gt;" type="TestNG" default="true" selected="false">
       <option name="VM_PARAMETERS" value="-ea" />
       <option name="WORKING_DIRECTORY" value="%MODULE_WORKING_DIR%" />
@@ -81,6 +81,17 @@
       <module name="algs4" />
       <method v="2" />
     </configuration>
+    <configuration name="Percolation" type="Application" factoryName="Application">
+      <option name="MAIN_CLASS_NAME" value="Percolation" />
+      <module name="algs4" />
+      <method v="2" />
+    </configuration>
+    <configuration name="PercolationStats" type="Application" factoryName="Application">
+      <option name="MAIN_CLASS_NAME" value="PercolationStats" />
+      <module name="algs4" />
+      <option name="PROGRAM_PARAMETERS" value="200 100" />
+      <method v="2" />
+    </configuration>
     <configuration name="RegExp" type="Application" factoryName="Application">
       <option name="MAIN_CLASS_NAME" value="RegExp" />
       <module name="algs4" />
@@ -109,6 +120,11 @@
     </configuration>
     <configuration name="sol1419" type="Application" factoryName="Application">
       <option name="MAIN_CLASS_NAME" value="solutions.Sol010419" />
+      <module name="algs4" />
+      <method v="2" />
+    </configuration>
+    <configuration name="solutions.Successor" type="Application" factoryName="Application">
+      <option name="MAIN_CLASS_NAME" value="solutions.Successor" />
       <module name="algs4" />
       <method v="2" />
     </configuration>
