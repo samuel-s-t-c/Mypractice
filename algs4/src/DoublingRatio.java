@@ -8,7 +8,7 @@ public class DoublingRatio {
         for (int i = 0; i < N; i++)
             a[i] = StdRandom.uniform(-MAX, MAX);
         StopwatchMy timer = new StopwatchMy();
-        int cnt = TwoSumFast.count(a);
+        int cnt = ThreeSum3.count(a);
         return timer.elapseTime();
     }
     public static void main(String[] args) {

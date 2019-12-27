@@ -11,7 +11,6 @@ public class ThreeSumFast {
             for (int j = i+1; j < n; j++) {
                 if (BinarySearch.rank(-(a[i] + a[j]), a) > j)
                     count++;
-
             }
         }
         return count;

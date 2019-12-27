@@ -3,26 +3,26 @@ import edu.princeton.cs.algs4.StdRandom;
 import edu.princeton.cs.algs4.StdStats;
 
 public class PercolationStats {
-    private int T;
-    private double mean;
-    private double stddev;
+    private final int t;
+    private final double mean;
+    private final double stddev;
 
     // perform independent trials on an n-by-n grid
     public PercolationStats(int n, int trials) {
         if (n < 1 || trials < 1) throw new IllegalArgumentException("Argument less than 1");
-        this.T  = trials;
+        this.t  = trials;
         double[] data = new double[trials];
-        for (int i = 0; i < trials;i++) {
+        for (int i = 0; i < trials; i++) {
             Percolation p = new Percolation(n);
             while (true) {
                 int row = StdRandom.uniform(1, n+1);
                 int col = StdRandom.uniform(1, n+1);
                 if (!p.isOpen(row, col))
-                    p.open(row,col);
+                    p.open(row, col);
                 if (p.percolates())
                     break;
             }
-            data[i] = p.numberOfOpenSites()/(n*n);
+            data[i] = (double) p.numberOfOpenSites()/(n*n);
         }
         mean = StdStats.mean(data);
         stddev = StdStats.stddev(data);
@@ -40,12 +40,12 @@ public class PercolationStats {
 
     // low endpoint of 95% confidence interval
     public double confidenceLo() {
-        return (mean - (1.96*stddev)/Math.sqrt(T));
+        return (mean - (1.96*stddev)/Math.sqrt(t));
     }
 
     // high endpoint of 95% confidence interval
     public double confidenceHi() {
-        return (mean + (1.96*stddev)/Math.sqrt(T));
+        return (mean + (1.96*stddev)/Math.sqrt(t));
     }
 
     // test client:
@@ -55,8 +55,8 @@ public class PercolationStats {
     // for the percolation threshold.
     public static void main(String[] args) {
         int n = Integer.parseInt(args[0]);
-        int T = Integer.parseInt(args[1]);
-        PercolationStats calc = new PercolationStats(n,T);
+        int t = Integer.parseInt(args[1]);
+        PercolationStats calc = new PercolationStats(n, t);
         StdOut.printf("mean                    = %f\n", calc.mean());
         StdOut.printf("stddev                  = %f\n", calc.stddev());
         StdOut.printf("95%% confidence interval = [%f, %f]\n", calc.confidenceLo(), calc.confidenceHi());
