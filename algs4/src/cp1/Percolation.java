@@ -1,3 +1,5 @@
+package cp1;
+
 import edu.princeton.cs.algs4.WeightedQuickUnionUF;
 
 public class Percolation {
@@ -82,7 +84,7 @@ public class Percolation {
     // test client (optional)
     public static void main(String[] args){
 //        int len = Integer.parseInt(args[0]);
-//        Percolation p = new Percolation(len);
+//        cp1.Percolation p = new cp1.Percolation(len);
 //        StdDraw.clear(StdDraw.BLACK);
 //        StdDraw.setXscale(0, len+1);
 //        StdDraw.setYscale(0, len+1);

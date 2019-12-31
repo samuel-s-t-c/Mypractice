@@ -1,6 +1,6 @@
-/******************************************************************************
- *  Compilation:  javac ThreeSum.java
- *  Execution:    java ThreeSum input.txt
+package cp1; /******************************************************************************
+ *  Compilation:  javac cp1.ThreeSum.java
+ *  Execution:    java cp1.ThreeSum input.txt
  *  Dependencies: In.java StdOut.java Stopwatch.java
  *  Data files:   https://algs4.cs.princeton.edu/14analysis/1Kints.txt
  *                https://algs4.cs.princeton.edu/14analysis/2Kints.txt
@@ -14,13 +14,13 @@
  *  and counts the number of triples that sum to exactly 0
  *  (ignoring integer overflow).
  *
- *  % java ThreeSum 1Kints.txt
+ *  % java cp1.ThreeSum 1Kints.txt
  *  70
  *
- *  % java ThreeSum 2Kints.txt
+ *  % java cp1.ThreeSum 2Kints.txt
  *  528
  *
- *  % java ThreeSum 4Kints.txt
+ *  % java cp1.ThreeSum 4Kints.txt
  *  4039
  *
  ******************************************************************************/
@@ -30,7 +30,7 @@ import edu.princeton.cs.algs4.StdOut;
 import edu.princeton.cs.algs4.Stopwatch;
 
 /**
- *  The {@code ThreeSum} class provides static methods for counting
+ *  The {@code cp1.ThreeSum} class provides static methods for counting
  *  and printing the number of triples in an array of integers that sum to 0
  *  (ignoring integer overflow).
  *  <p>

@@ -1,4 +1,5 @@
-import edu.princeton.cs.algs4.StdDraw;
+package cp1;
+
 import edu.princeton.cs.algs4.StdOut;
 import edu.princeton.cs.algs4.StdRandom;
 
@@ -58,7 +59,7 @@ public class ThreeSum3 {
         int cnt2 = ThreeSum3.count(a);
         prev = now;
         now = timer.elapseTime();
-        StdOut.printf("ThreeSum3: %d time: %.5f\n\n", cnt2, (now-prev));
+        StdOut.printf("cp1.ThreeSum3: %d time: %.5f\n\n", cnt2, (now-prev));
         return cnt2 == cnt1;
     }
 

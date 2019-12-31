@@ -35,18 +35,18 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Application.ThreeSum3">
+  <component name="RunManager" selected="Application.cp2.TraceInsertion">
     <configuration name="&lt;template&gt;" type="TestNG" default="true" selected="false">
       <option name="VM_PARAMETERS" value="-ea" />
       <option name="WORKING_DIRECTORY" value="%MODULE_WORKING_DIR%" />
     </configuration>
     <configuration name="DoublingRatio" type="Application" factoryName="Application">
-      <option name="MAIN_CLASS_NAME" value="DoublingRatio" />
+      <option name="MAIN_CLASS_NAME" value="cp1.DoublingRatio" />
       <module name="algs4" />
       <method v="2" />
     </configuration>
     <configuration name="DoublingTest" type="Application" factoryName="Application">
-      <option name="MAIN_CLASS_NAME" value="DoublingTest" />
+      <option name="MAIN_CLASS_NAME" value="cp1.DoublingTest" />
       <module name="algs4" />
       <method v="2" />
     </configuration>
@@ -56,18 +56,18 @@
       <method v="2" />
     </configuration>
     <configuration name="LinkedListStack" type="Application" factoryName="Application">
-      <option name="MAIN_CLASS_NAME" value="LinkedStackMy" />
+      <option name="MAIN_CLASS_NAME" value="cp1.LinkedStackMy" />
       <module name="algs4" />
       <option name="PROGRAM_PARAMETERS" value="&lt;  ~/mypractice/algs4/tobe.txt" />
       <method v="2" />
     </configuration>
     <configuration name="LinkedQueue" type="Application" factoryName="Application">
-      <option name="MAIN_CLASS_NAME" value="LinkedQueueMy" />
+      <option name="MAIN_CLASS_NAME" value="cp1.LinkedQueueMy" />
       <module name="algs4" />
       <method v="2" />
     </configuration>
     <configuration name="Main" type="Application" factoryName="Application" temporary="true">
-      <option name="MAIN_CLASS_NAME" value="Parenthesis" />
+      <option name="MAIN_CLASS_NAME" value="cp1.Parenthesis" />
       <module name="algs4" />
       <option name="WORKING_DIRECTORY" value="file://$PROJECT_DIR$" />
       <RunnerSettings RunnerId="Run" />
@@ -77,18 +77,18 @@
       </method>
     </configuration>
     <configuration name="MyQueue" type="Application" factoryName="Application">
-      <option name="MAIN_CLASS_NAME" value="ResizingArrayQueueMy" />
+      <option name="MAIN_CLASS_NAME" value="cp1.ResizingArrayQueueMy" />
       <module name="algs4" />
       <method v="2" />
     </configuration>
     <configuration name="Percolation" type="Application" factoryName="Application">
-      <option name="MAIN_CLASS_NAME" value="Percolation" />
+      <option name="MAIN_CLASS_NAME" value="cp1.Percolation" />
       <module name="algs4" />
       <option name="PROGRAM_PARAMETERS" value="10" />
       <method v="2" />
     </configuration>
     <configuration name="PercolationStats" type="Application" factoryName="Application">
-      <option name="MAIN_CLASS_NAME" value="PercolationStats" />
+      <option name="MAIN_CLASS_NAME" value="cp1.PercolationStats" />
       <module name="algs4" />
       <option name="PROGRAM_PARAMETERS" value="2 100000" />
       <method v="2" />
@@ -100,12 +100,12 @@
       <method v="2" />
     </configuration>
     <configuration name="ResizingArrayStack" type="Application" factoryName="Application">
-      <option name="MAIN_CLASS_NAME" value="ResizingArrayStackMy" />
+      <option name="MAIN_CLASS_NAME" value="cp1.ResizingArrayStackMy" />
       <module name="algs4" />
       <method v="2" />
     </configuration>
     <configuration name="StopwatchMy" type="Application" factoryName="Application">
-      <option name="MAIN_CLASS_NAME" value="StopwatchMy" />
+      <option name="MAIN_CLASS_NAME" value="cp1.StopwatchMy" />
       <module name="algs4" />
       <option name="PROGRAM_PARAMETERS" value="3000" />
       <method v="2" />
@@ -116,12 +116,12 @@
       <method v="2" />
     </configuration>
     <configuration name="TestStdDraw" type="Application" factoryName="Application">
-      <option name="MAIN_CLASS_NAME" value="TestStdDraw" />
+      <option name="MAIN_CLASS_NAME" value="cp1.TestStdDraw" />
       <module name="algs4" />
       <method v="2" />
     </configuration>
     <configuration name="ThreeSum3" type="Application" factoryName="Application">
-      <option name="MAIN_CLASS_NAME" value="ThreeSum3" />
+      <option name="MAIN_CLASS_NAME" value="cp1.ThreeSum3" />
       <module name="algs4" />
       <method v="2" />
     </configuration>
@@ -134,6 +134,22 @@
       <module name="algs4" />
       <method v="2" />
     </configuration>
+    <configuration name="cp2.Insertion" type="Application" factoryName="Application">
+      <option name="MAIN_CLASS_NAME" value="cp2.Insertion" />
+      <module name="algs4" />
+      <method v="2" />
+    </configuration>
+    <configuration name="cp2.Selection" type="Application" factoryName="Application">
+      <option name="MAIN_CLASS_NAME" value="cp2.Selection" />
+      <module name="algs4" />
+      <method v="2" />
+    </configuration>
+    <configuration name="cp2.TraceInsertion" type="Application" factoryName="Application">
+      <option name="MAIN_CLASS_NAME" value="cp2.TraceInsertion" />
+      <module name="algs4" />
+      <option name="PROGRAM_PARAMETERS" value="SORTEXAMPLE" />
+      <method v="2" />
+    </configuration>
     <configuration name="sol1419" type="Application" factoryName="Application">
       <option name="MAIN_CLASS_NAME" value="solutions.Sol010419" />
       <module name="algs4" />
@@ -141,6 +157,11 @@
     </configuration>
     <configuration name="solutions.Successor" type="Application" factoryName="Application">
       <option name="MAIN_CLASS_NAME" value="solutions.Successor" />
+      <module name="algs4" />
+      <method v="2" />
+    </configuration>
+    <configuration name="t" type="Application" factoryName="Application">
+      <option name="MAIN_CLASS_NAME" value="t" />
       <module name="algs4" />
       <method v="2" />
     </configuration>
