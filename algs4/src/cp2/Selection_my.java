@@ -4,7 +4,7 @@ import edu.princeton.cs.algs4.In;
 import edu.princeton.cs.algs4.StdDraw;
 import edu.princeton.cs.algs4.StdOut;
 
-public class Selection {
+public class Selection_my {
     public static void sort(Comparable[] a) {
         int N = a.length;
         int cntCom = 0, cntExch = 0;

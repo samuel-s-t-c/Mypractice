@@ -15,7 +15,7 @@ import edu.princeton.cs.algs4.StdDraw;
 
 import java.awt.Font;
 
-public class TraceInsertion {
+public class TraceInsertion_my {
 
     // insertion sort
     public static void sort(String[] a) {
@@ -60,13 +60,14 @@ public class TraceInsertion {
         int n = a.length;
 
         StdDraw.setPenColor(StdDraw.BLACK);
-        StdDraw.text(n/2.0, -3, "a[ ]");
+        StdDraw.text(n/2.0, -2.7, "a[ ]");
         for (int i = 0; i < n; i++)
             StdDraw.text(i, -2, i + "");
         StdDraw.text(-2.50, -2, "i");
         StdDraw.text(-1.25, -2, "j");
         StdDraw.setPenColor(StdDraw.BOOK_RED);
         StdDraw.line(-3, -1.65, n - 0.5, -1.65);
+        StdDraw.line(-0.5, -3, -0.5,n+1);
         StdDraw.setPenColor(StdDraw.BLACK);
         for (int i = 0; i < n; i++)
             StdDraw.text(i, -1, a[i]);

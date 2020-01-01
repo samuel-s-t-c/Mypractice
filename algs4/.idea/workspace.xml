@@ -134,18 +134,30 @@
       <module name="algs4" />
       <method v="2" />
     </configuration>
+    <configuration name="cp2.DoublingTest" type="Application" factoryName="Application">
+      <option name="MAIN_CLASS_NAME" value="cp2.DoublingTest" />
+      <module name="algs4" />
+      <option name="PROGRAM_PARAMETERS" value="Selection Insertion Shell 2000 1" />
+      <method v="2" />
+    </configuration>
     <configuration name="cp2.Insertion" type="Application" factoryName="Application">
-      <option name="MAIN_CLASS_NAME" value="cp2.Insertion" />
+      <option name="MAIN_CLASS_NAME" value="cp2.Insertion_my" />
       <module name="algs4" />
       <method v="2" />
     </configuration>
     <configuration name="cp2.Selection" type="Application" factoryName="Application">
-      <option name="MAIN_CLASS_NAME" value="cp2.Selection" />
+      <option name="MAIN_CLASS_NAME" value="cp2.Selection_my" />
       <module name="algs4" />
       <method v="2" />
     </configuration>
+    <configuration name="cp2.SortCompare" type="Application" factoryName="Application">
+      <option name="MAIN_CLASS_NAME" value="cp2.SortCompare_my" />
+      <module name="algs4" />
+      <option name="PROGRAM_PARAMETERS" value="Shell Insertion 10000 100" />
+      <method v="2" />
+    </configuration>
     <configuration name="cp2.TraceInsertion" type="Application" factoryName="Application">
-      <option name="MAIN_CLASS_NAME" value="cp2.TraceInsertion" />
+      <option name="MAIN_CLASS_NAME" value="cp2.TraceInsertion_my" />
       <module name="algs4" />
       <option name="PROGRAM_PARAMETERS" value="SORTEXAMPLE" />
       <method v="2" />

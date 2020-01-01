@@ -4,7 +4,7 @@ import edu.princeton.cs.algs4.In;
 import edu.princeton.cs.algs4.StdDraw;
 import edu.princeton.cs.algs4.StdOut;
 
-public class Insertion {
+public class Insertion_my {
     public static void sort(Comparable[] a) {
         int len = a.length;
         int cnt = 0;
