@@ -35,7 +35,7 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Application.t">
+  <component name="RunManager" selected="Application.cp1.VisualAccumulatorMy">
     <configuration name="&lt;template&gt;" type="TestNG" default="true" selected="false">
       <option name="VM_PARAMETERS" value="-ea" />
       <option name="WORKING_DIRECTORY" value="%MODULE_WORKING_DIR%" />
@@ -134,6 +134,11 @@
       <module name="algs4" />
       <method v="2" />
     </configuration>
+    <configuration name="cp1.VisualAccumulatorMy" type="Application" factoryName="Application">
+      <option name="MAIN_CLASS_NAME" value="cp1.VisualAccumulatorMy" />
+      <module name="algs4" />
+      <method v="2" />
+    </configuration>
     <configuration name="cp2.DoublingTest" type="Application" factoryName="Application">
       <option name="MAIN_CLASS_NAME" value="cp2.DoublingTest" />
       <module name="algs4" />
@@ -160,6 +165,11 @@
       <option name="MAIN_CLASS_NAME" value="cp2.TraceInsertion_my" />
       <module name="algs4" />
       <option name="PROGRAM_PARAMETERS" value="SORTEXAMPLE" />
+      <method v="2" />
+    </configuration>
+    <configuration name="cp3.ssst" type="Application" factoryName="Application">
+      <option name="MAIN_CLASS_NAME" value="cp3.ssst" />
+      <module name="algs4" />
       <method v="2" />
     </configuration>
     <configuration name="sol1419" type="Application" factoryName="Application">
