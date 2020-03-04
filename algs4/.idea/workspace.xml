@@ -35,7 +35,7 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Application.cp1.VisualAccumulatorMy">
+  <component name="RunManager" selected="Application.t">
     <configuration name="&lt;template&gt;" type="TestNG" default="true" selected="false">
       <option name="VM_PARAMETERS" value="-ea" />
       <option name="WORKING_DIRECTORY" value="%MODULE_WORKING_DIR%" />
@@ -185,6 +185,7 @@
     <configuration name="t" type="Application" factoryName="Application">
       <option name="MAIN_CLASS_NAME" value="t" />
       <module name="algs4" />
+      <option name="PROGRAM_PARAMETERS" value="abca" />
       <method v="2" />
     </configuration>
     <configuration default="true" type="JUnit" factoryName="JUnit">

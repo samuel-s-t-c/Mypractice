@@ -1,50 +1,39 @@
-import edu.princeton.cs.algs4.*;
+import edu.princeton.cs.algs4.StdOut;
 
-public class t {
+import java.util.Arrays;
+
+class t {
     public static void main(String[] args) {
-        int cnt = 0;
-        int n = 10;
-        int[] std = new int[n];
-        int[] input = new int[n];
-        for (int i = 0; i < n; i++) {
-            std[i] = i;
-        }
-
-        for (int i = 0; i < n; i++) {
-            input[i] = std[n-i-1];
-        }
-
-        for (int i = 1; i < n; i++) {
-            int i1, i2;
-            int j = i;
-            i2 = indexof(std, input[i]);
-            while (true) {
-                i1 = indexof(std, input[--j]);
-                if (i1 > i2) {
-                    exch(input, j, j+1);
-                    cnt++;
-                }
-                if (j == 0 || i1 < i2) {
+        StdOut.println(lengthOfLongestSubstring(args[0]));
+    }
+    public static  int lengthOfLongestSubstring(String s) {
+        if (s == null) return 0;
+        int len = s.length();
+        char[] arr = new char[len];
+        arr[0] = s.charAt(0);
+        int head = 0, lenOfLongest = 1;
+        int i;
+        for (i = 1; i < len; i++) {
+            arr[i] = s.charAt(i);
+            char c = arr[i];
+            int currLen = i - head;
+            StdOut.println(Arrays.toString(arr));
+            for (int j = i; j > head; j--) {
+                int cmp = arr[j] - arr[j-1];
+                if (cmp == 0) {
+                    lenOfLongest = Math.max(currLen, lenOfLongest);
+                    arr[i] = c;
+                    head = i;
                     break;
+                } else if (cmp < 0) {
+                    char tmp = arr[j];
+                    arr[j] = arr[j-1];
+                    arr[j-1] = tmp;
                 }
             }
         }
-        for(int i : input) {
-            StdOut.print(i+" ");
-        }
-        StdOut.println("\ncnt is "+cnt);
-    }
-    public static void exch(int[] a, int i, int j) {
-        if (a == null) return;
-        int temp = a[i]; a[i] = a[j]; a[j] = temp;
-    }
-    public static int indexof(int[] a, int val) {
-        if (a == null) return -1;
-        int len = a.length;
-        for (int i = 0; i < len; i++) {
-            if (a[i] == val)
-                return i;
-        }
-        return -1;
+        StdOut.println(Arrays.toString(arr));
+        lenOfLongest = Math.max((i - head), lenOfLongest);
+        return lenOfLongest;
     }
 }

@@ -56,23 +56,23 @@ public class RedBlackBST<Key extends Comparable<Key>, Value> {
         h.left.color = h.right.color =  BLACK;
     }
 
-    public void put(Key key, Value val) {
-        root = put(root, key, val);
-        root.color = BLACK;
-    }
-    private Node put(Node h, Key key, Value val) {
-        if (h == null)
-            return new Node(key, val, 1, RED);
-        int cmp = key.compareTo(h.key);
-        if (cmp < 0)
-            h.left = put(h.left, key, val);
-        else if (cmp > 0)
-            h.right = put(h.right, key, val);
-        else
-            h.val = val;
-
-        if (isRED(h.right) && isBLACK(h.left)) h = rotateLeft(h);
-        if (isRED(h.left) && isRED(h.left.left)) h= rotateRight(h);
-        if (isRED(h.left) && isRED(h.right)) flipColors(h);
-    }
+//    public void put(Key key, Value val) {
+//        root = put(root, key, val);
+//        root.color = BLACK;
+//    }
+//    private Node put(Node h, Key key, Value val) {
+//        if (h == null)
+//            return new Node(key, val, 1, RED);
+//        int cmp = key.compareTo(h.key);
+//        if (cmp < 0)
+//            h.left = put(h.left, key, val);
+//        else if (cmp > 0)
+//            h.right = put(h.right, key, val);
+//        else
+//            h.val = val;
+//
+//        if (isRED(h.right) && isBLACK(h.left)) h = rotateLeft(h);
+//        if (isRED(h.left) && isRED(h.left.left)) h= rotateRight(h);
+//        if (isRED(h.left) && isRED(h.right)) flipColors(h);
+//    }
 }
