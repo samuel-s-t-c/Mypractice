@@ -1,7 +1,8 @@
 #include <iostream>
 
-int main(int argc, char** args)
+int a;
+int b;
+int c;
+int main()
 {
-  std::cout << "end\n";
-  return -1;
 }
