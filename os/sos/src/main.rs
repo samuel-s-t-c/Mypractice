@@ -2,4 +2,4 @@
 #![no_main]
 
 #[allow(unused_imports)]
-use os;
+use sos;
