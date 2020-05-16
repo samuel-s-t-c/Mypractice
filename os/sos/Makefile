@@ -6,13 +6,14 @@ bin := target/$(target)/$(mode)/kernel.bin
 objdump := rust-objdump --arch-name=riscv64
 objcopy := rust-objcopy --binary-architecture=riscv64
 
-.PHONY: kernel build clean qemu run env
+.PHONY: kernel build clean qemu run env path
 
 env:
 	cargo install cargo-binutils
 	rustup component add llvm-tools-preview rustfmt
 	rustup target add $(target)
-
+path:
+	PATH="${PWD}/gnu_toolchain_riscv64/riscv64-unknown-elf-gcc-8.3.0-2019.08.0-x86_64-linux-ubuntu14/bin:${PATH}"
 kernel:
 	cargo build
 
